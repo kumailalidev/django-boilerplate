@@ -28,8 +28,13 @@ NOTE: Copy generated secret key
 # Environment name (development or production)
 ENVIRONMENT=name
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# Generated secret key
 SECRET_KEY=secret_key
+
+# PRODUCTION ONLY
+
+# Allowed hosts separated by ',' (eg. 127.0.0.1,localhost)
+ALLOWED_HOSTS=127.0.0.1,localhost
 ```
 
 ### 4. Create and apply migrations
@@ -43,7 +48,7 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-### Run Django server
+### 5. Run Django server
 ```
 python manage.py runserver
 ```
