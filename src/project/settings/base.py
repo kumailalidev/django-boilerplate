@@ -96,6 +96,10 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
+# NOTE: In addition to using a static/ directory inside your apps,
+#       you can define a list of directories (STATICFILES_DIRS) in
+#       your settings file where Django will also look for static
+#       files
 
 STATIC_URL = "static/"
 
