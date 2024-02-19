@@ -2,8 +2,10 @@ from .base import *
 
 DEBUG = False
 
+
 # You must set settings.ALLOWED_HOSTS if DEBUG is False.
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
+
 
 DATABASES = {
     "default": {
