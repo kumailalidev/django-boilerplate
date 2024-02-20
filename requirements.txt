@@ -1,3 +1,1 @@
-django==5.0.2
-django-debug-toolbar==4.3.0
-django-environ==0.11.2
+-r ./requirements/development.txt
