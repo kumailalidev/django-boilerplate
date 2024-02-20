@@ -1,4 +1,4 @@
-# [REPLACE ME]
+# Django Project
 
 ## Installation Instructions
 
@@ -25,16 +25,8 @@ NOTE: Copy generated secret key
 ### 3. Create .env file in root directory
 
 ```bash
-# Environment name (development or production)
-ENVIRONMENT=name
-
-# Generated secret key
-SECRET_KEY=secret_key
-
-# PRODUCTION ONLY
-
-# Allowed hosts separated by ',' (eg. 127.0.0.1,localhost)
-ALLOWED_HOSTS=127.0.0.1,localhost
+ENVIRONMENT=development
+SECRET_KEY=secret_key # Generated secret key
 ```
 
 ### 4. Create and apply migrations
