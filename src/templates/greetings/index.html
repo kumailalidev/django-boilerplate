@@ -3,6 +3,13 @@
 
 {% block content %}
 
-<h1>Welcome to Django Web Framework</h1>
+{% if request.user.is_authenticated %}
+  <h1><span>{{ request.user.username }},</span> Welcome to Django Web Framework</h1>
+{% else %}
+  <h1>Welcome to Django Web Framework</h1>
+{% endif %}
+
+<p>{{ message }}</p>
+
 
 {% endblock %}
