@@ -15,22 +15,23 @@ ENV_FILE = ENV_DIR / ".env"
 if Path(ENV_FILE).exists:
     # Take environment variables form .env file
     env.read_env(ENV_FILE, overwrite=True)
-    print("Environment variables from '.env' file loaded successfully.")
 
-# Django Secret Key
-SECRET_KEY = env("SECRET_KEY")
-
-# Application definition
-INSTALLED_APPS = [
+# APPS
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+]
+THIRD_PARTY_APPS = []
+LOCAL_APPS = [
     "greetings",
 ]
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+# MIDDLEWARES
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -59,6 +60,14 @@ TEMPLATES = [
     },
 ]
 
+# DATABASE
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
 WSGI_APPLICATION = "project.wsgi.application"
 
 # Password validation
@@ -84,18 +93,23 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+# Default primary key field type
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Static files (CSS, JavaScript, Images)
-# NOTE: In addition to using a static/ directory inside your apps,
-#       you can define a list of directories (STATICFILES_DIRS) in
-#       your settings file where Django will also look for static
-#       files
+# In addition to using a static/ directory inside your apps,
+# you can define a list of directories (STATICFILES_DIRS) in
+# your settings file where Django will also look for static
+# files
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"  # used by collectstatic command
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# MEDIA FILES (Uploaded by users) (Development environment only)
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"  # media folder location
 
-# Default primary key field type
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# EMAIL
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
