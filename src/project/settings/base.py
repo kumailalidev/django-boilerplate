@@ -30,7 +30,8 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = []
 LOCAL_APPS = [
-    "greetings",
+    "users.apps.UsersConfig",
+    "greetings.apps.GreetingsConfig",
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -98,6 +99,9 @@ USE_TZ = True
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# USER MODEL
+AUTH_USER_MODEL = "users.CustomUser"
 
 # Static files (CSS, JavaScript, Images)
 # In addition to using a static/ directory inside your apps,
