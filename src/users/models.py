@@ -19,11 +19,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     username_validator = UnicodeUsernameValidator()
 
-    def username_unique_validator(value):
-        """Validator function to ensure username is unique."""
-        if __class__.objects.filter(username=value).exists():
-            raise ValidationError(message=_("This username is already in use."))
-
     username = models.CharField(
         _("username"),
         max_length=30,
@@ -31,7 +26,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         help_text=_(
             "Username contains 30 characters or fewer. Letters, digits and @/./+/-/_ only."
         ),
-        validators=[username_validator, username_unique_validator],
+        validators=[username_validator],
         error_messages={
             "unique": _("A user with that username already exists."),
         },
