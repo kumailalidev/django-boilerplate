@@ -3,27 +3,33 @@
 import environ
 import os
 import sys
+from pathlib import Path
+
 
 env = environ.Env(
     # set casting, default value
     ENVIRONMENT=(str, "development")
 )
 
-# Set the project base directory
-ENV_DIR = os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__))
-)  # / root directory
+# '.env' directory path
+ENV_DIR = Path(__file__).parent.parent
 
-# Take environment variables form .env file
-environ.Env.read_env(os.path.join(ENV_DIR, ".env"))
+# '.env' file
+ENV_FILE = ENV_DIR / ".env"
+if Path(ENV_FILE).exists:
+    # Take environment variables form .env file
+    env.read_env(ENV_FILE, overwrite=True)
+    print("Environment variables from '.env' file loaded successfully.")
+
+ENVIRONMENT = env("ENVIRONMENT")
 
 
 def main():
     """Run administrative tasks."""
 
-    if env("ENVIRONMENT") == "development":
+    if ENVIRONMENT == "development":
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.development")
-    elif env("ENVIRONMENT") == "production":
+    elif ENVIRONMENT == "production":
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.production")
 
     try:

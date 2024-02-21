@@ -1,27 +1,26 @@
-import os
 import environ
 from pathlib import Path
 
-env = environ.Env()
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent  # '/src' or '/app'
 
+# '.env' file directory path
+ENV_DIR = Path(__file__).parent.parent
 
-# Set the .env base directory
-ENV_DIR = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-)
+# load '.env' file
+env = environ.Env()
 
-# Take environment variables from .env file
-environ.Env.read_env(os.path.join(ENV_DIR, ".env"))
+ENV_FILE = ENV_DIR / ".env"
+if Path(ENV_FILE).exists:
+    # Take environment variables form .env file
+    env.read_env(ENV_FILE, overwrite=True)
+    print("Environment variables from '.env' file loaded successfully.")
 
+# Django Secret Key
 SECRET_KEY = env("SECRET_KEY")
 
-
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -31,7 +30,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "greetings",
 ]
-
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -43,9 +41,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-
 ROOT_URLCONF = "project.urls"
-
 
 TEMPLATES = [
     {
@@ -65,9 +61,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "project.wsgi.application"
 
-
 # Password validation
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -85,13 +79,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -100,16 +90,12 @@ USE_TZ = True
 #       you can define a list of directories (STATICFILES_DIRS) in
 #       your settings file where Django will also look for static
 #       files
-
 STATIC_URL = "static/"
-
 STATIC_ROOT = BASE_DIR / "staticfiles"  # used by collectstatic command
-
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
 
 # Default primary key field type
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
