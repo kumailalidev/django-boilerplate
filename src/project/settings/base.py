@@ -16,6 +16,9 @@ if Path(ENV_FILE).exists:
     # Take environment variables form .env file
     env.read_env(ENV_FILE, overwrite=True)
 
+# DEBUG SETTING
+DEBUG = env.bool("DEBUG", False)
+
 # APPS
 DJANGO_APPS = [
     "django.contrib.admin",
