@@ -1,4 +1,8 @@
 -r ./base.txt
 
+# Testing
+pytest==8.0.1
+
 # Django
 django-debug-toolbar==4.3.0
+pytest-django==4.8.0
