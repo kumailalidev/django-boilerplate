@@ -2,7 +2,10 @@
 
 # Testing
 pytest==8.0.1
+coverage==7.4.2
+pytest-cov==4.1.0
 
 # Django
 django-debug-toolbar==4.3.0
 pytest-django==4.8.0
+django-coverage-plugin==3.1.0

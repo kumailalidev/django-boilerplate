@@ -6,6 +6,7 @@ from .base import *
 from .base import env
 
 # GENERAL
+DEBUG = True
 SECRET_KEY = env(
     "SECRET_KEY",
     default="s(v&re7l8e%tvknfc3lpvzzjm(=cv$6g68@%h^$epvd-fu#^88",
