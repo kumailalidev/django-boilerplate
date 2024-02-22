@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.mail import send_mail
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils import timezone
@@ -41,7 +40,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_of_birth = models.DateField(
         _("date of birth"),
         validators=[validate_age],
-        help_text=_("You must be 18 years old to register."),
+        help_text=_("You must be 18 years old."),
     )
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     middle_name = models.CharField(_("middle name"), max_length=150, blank=True)

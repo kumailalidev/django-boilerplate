@@ -2,13 +2,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation, get_user_model
-from django.contrib.auth.forms import (
-    UserChangeForm,
-    UserCreationForm,
-    UsernameField,
-    ReadOnlyPasswordHashField,
-    ReadOnlyPasswordHashWidget,
-)
+from django.contrib.auth.forms import UsernameField, ReadOnlyPasswordHashField
 
 CustomUserModel = get_user_model()
 
@@ -127,7 +121,14 @@ class CustomUserChangeForm(forms.ModelForm):
 
     class Meta:
         model = CustomUserModel
-        fields = "__all__"
+        fields = (
+            "username",
+            "email",
+            "date_of_birth",
+            "first_name",
+            "middle_name",
+            "last_name",
+        )
         field_classes = {"username": UsernameField}
 
     def __init__(self, *args, **kwargs):
