@@ -18,5 +18,7 @@ if DEBUG:
     urlpatterns += [
         path("__debug__/", include("debug_toolbar.urls")),
     ]
+    # Serving static files from STATIC_ROOT folder
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     # Serving media files uploaded by a user during development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
