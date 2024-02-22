@@ -19,7 +19,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
 
     username = models.CharField(
-        _("username"),
+        verbose_name=_("Username"),
         max_length=30,
         unique=True,
         help_text=_(
@@ -31,20 +31,26 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         },
     )
     email = models.EmailField(
-        _("email address"),
+        verbose_name=_("Email Address"),
         unique=True,
         error_messages={
             "unique": _("A user with that email address is already registered.")
         },
     )
     date_of_birth = models.DateField(
-        _("date of birth"),
+        _("Date of Birth"),
         validators=[validate_age],
         help_text=_("You must be 18 years old."),
     )
-    first_name = models.CharField(_("first name"), max_length=150, blank=True)
-    middle_name = models.CharField(_("middle name"), max_length=150, blank=True)
-    last_name = models.CharField(_("last name"), max_length=150, blank=True)
+    first_name = models.CharField(
+        verbose_name=_("First Name"), max_length=150, blank=True
+    )
+    middle_name = models.CharField(
+        verbose_name=_("Middle Name"), max_length=150, blank=True
+    )
+    last_name = models.CharField(
+        verbose_name=_("Last Name"), max_length=150, blank=True
+    )
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,

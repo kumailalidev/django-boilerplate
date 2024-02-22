@@ -9,8 +9,8 @@ CustomUserModel = get_user_model()
 
 class CustomUserCreationForm(forms.ModelForm):
     """
-    A form that creates a user, with no privileges, from the given username and
-    password.
+    A form that creates a user, with no privileges, from the given username,
+    email, date of birth and password.
     """
 
     error_messages = {"password_mismatch": _("The two password field's didn't match.")}
@@ -39,8 +39,8 @@ class CustomUserCreationForm(forms.ModelForm):
     class Meta:
         model = CustomUserModel
         fields = (
-            "username",
             "email",
+            "username",
             "date_of_birth",
             "first_name",
             "middle_name",
@@ -49,6 +49,13 @@ class CustomUserCreationForm(forms.ModelForm):
             "password2",
         )
         fields_classes = {"username": UsernameField}
+        widgets = {
+            "date_of_birth": forms.DateInput(
+                attrs={
+                    "type": "date",
+                }
+            ),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
