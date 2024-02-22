@@ -9,15 +9,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent  # '/src' or '/app'
 ENV_DIR = Path(__file__).parent.parent
 
 # load '.env' file
-env = environ.Env()
+env = environ.Env(
+    ALLOWED_HOSTS=(list, []),
+)
 
 ENV_FILE = ENV_DIR / ".env"
-if Path(ENV_FILE).exists:
+if Path(ENV_FILE).exists():
     # Take environment variables form .env file
-    env.read_env(ENV_FILE, overwrite=True)
+    env.read_env(ENV_FILE)
+
+# SECRET KEY
+SECRET_KEY = env("SECRET_KEY")
 
 # DEBUG SETTING
-DEBUG = env.bool("DEBUG", False)
+DEBUG = False
+
+# ALLOWED HOSTS
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 # APPS
 DJANGO_APPS = [

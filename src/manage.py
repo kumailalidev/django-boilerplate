@@ -16,10 +16,9 @@ ENV_DIR = Path(__file__).parent.parent
 
 # '.env' file
 ENV_FILE = ENV_DIR / ".env"
-if Path(ENV_FILE).exists:
+if Path(ENV_FILE).exists():
     # Take environment variables form .env file
     env.read_env(ENV_FILE, overwrite=True)
-    print("Environment variables from '.env' file loaded successfully.")
 
 ENVIRONMENT = env("ENVIRONMENT")
 
