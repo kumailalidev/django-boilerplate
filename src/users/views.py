@@ -1,7 +1,50 @@
+from typing import Any
+from django.http import HttpRequest
+from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render
+from django.views.generic import View
 from django.contrib.auth.views import LoginView
 
-from .forms import CustomUserAuthenticationForm
+from .mixins import RedirectIfAuthenticatedMixin
+from .forms import CustomUserCreationForm, CustomUserAuthenticationForm
+
+
+class CustomUserSignupView(RedirectIfAuthenticatedMixin, View):
+    """
+    Display the sign up form and handles the
+    user creation action.
+    """
+
+    # TODO: Update view to generic FormView or any suitable
+    # class based view.
+
+    next_page = "users:home"
+    redirect_authenticated_user = True
+
+    def get(self, request, *args, **kwargs):
+        form = CustomUserCreationForm()
+
+        return render(
+            request=request,
+            template_name="registration/signup.html",
+            context={"form": form},
+        )
+
+    def post(self, request, *args, **kwargs):
+        form = CustomUserCreationForm(data=request.POST or None)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponse("User Created")
+        else:
+            return render(
+                request=request,
+                template_name="registration/signup.html",
+                context={"form": form},
+            )
+
+
+custom_user_signup_view = CustomUserSignupView.as_view()
 
 
 class CustomUserLoginView(LoginView):

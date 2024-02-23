@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+
+{% if form.errors and not form.non_field_errors %}
+  <p>
+    {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+  </p>
+{% endif %}
+
+{% if form.non_field_errors %}
+  {% for error in form.non_field_errors %}
+  <p>
+      {{ error }}
+  </p>
+  {% endfor %}
+{% endif %}
+
+<div>
+  <form action="" method="post">
+    {% csrf_token %}
+    <h1>Required Information</h1>
+    <hr>
+    <div>
+      {{ form.email.errors }}
+      {{ form.email.label_tag }} {{ form.email }}
+    </div>
+    <div>
+      {{ form.username.errors }}
+      {{ form.username.label_tag }} {{ form.username }}
+    </div>
+    <div>
+      {{ form.date_of_birth.errors }}
+      {{ form.date_of_birth.label_tag }} {{ form.date_of_birth }}
+    </div>
+    <div>
+      <!-- only password2 field contains error messages -->
+      {{ form.password2.errors }}
+    </div>
+    <div>
+      {{ form.password1.label_tag }} {{ form.password1 }}
+    </div>
+    <div>
+      {{ form.password2.label_tag }} {{ form.password2 }}
+      <!-- hidden field for REDIRECT_FIELD_NAME  -->
+      <input type="hidden" name="next" value="{{ next }}">
+    </div>
+    <hr>
+    <h1>Optional Information</h1>
+    <hr>
+    <div>
+      {{ form.first_name.errors }}
+      {{ form.first_name.label_tag }} {{ form.first_name }}
+    </div>
+    <div>
+      {{ form.middle_name.errors }}
+      {{ form.middle_name.label_tag }} {{ form.middle_name }}
+    </div>
+    <div>
+      {{ form.last_name.errors }}
+      {{ form.last_name.label_tag }} {{ form.last_name }}
+    </div>
+    <hr>
+    <div>
+      <input type="submit" value="{% translate 'Sign up' %}">
+    </div>
+  </form>
+  <hr>
+  {% url 'users:login' as login_url %}
+  {% if login_url %}
+  <div>
+    <p>{% translate 'Already have a account? ' %}<a href="{{ password_reset_url }}">{% translate 'Click here to login.' %}</a></p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

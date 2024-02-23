@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic import TemplateView
 
-from .views import custom_user_login_view
+from .views import custom_user_login_view, custom_user_signup_view
 
 app_name = "users"
 
@@ -12,4 +12,5 @@ urlpatterns = [
         name="home",
     ),
     path(route="login/", view=custom_user_login_view, name="login"),
+    path(route="signup/", view=custom_user_signup_view, name="signup"),
 ]
