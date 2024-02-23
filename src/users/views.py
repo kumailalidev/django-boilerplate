@@ -1,15 +1,21 @@
-from typing import Any
-from django.core.handlers.wsgi import WSGIRequest
-from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render
-from django.template.response import TemplateResponse
+from django.urls import reverse_lazy
 from django.views.generic import View
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import (
+    LoginView,
+    LogoutView,
+    PasswordChangeView,
+    PasswordChangeDoneView,
+)
 from django.contrib import messages
 
 from .mixins import RedirectIfAuthenticatedMixin
-from .forms import CustomUserCreationForm, CustomUserAuthenticationForm
+from .forms import (
+    CustomUserCreationForm,
+    CustomUserAuthenticationForm,
+    CustomUserPasswordChangeForm,
+)
 
 
 class CustomUserSignupView(RedirectIfAuthenticatedMixin, View):
@@ -88,7 +94,7 @@ class CustomUserLogoutView(LogoutView):
     template_name = "registration/logged_out.html"
 
     # adding custom message
-    def post(self, request: WSGIRequest, *args: Any, **kwargs: Any) -> TemplateResponse:
+    def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         messages.success(request, "You have been logged out successfully.")
 
@@ -96,3 +102,37 @@ class CustomUserLogoutView(LogoutView):
 
 
 custom_user_logout_view = CustomUserLogoutView.as_view()
+
+
+class CustomUserPasswordChangeView(PasswordChangeView):
+    """
+    Displays password change form and handles the password
+    change action and sends a message.
+    """
+
+    form_class = CustomUserPasswordChangeForm
+    success_url = reverse_lazy("users:password_change_done")
+    template_name = "registration/password_change_form.html"
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(
+            request=self.request,
+            message="Password was changed successfully. Please login with your new credentials.",
+        )
+
+        return response
+
+
+custom_user_password_change_view = CustomUserPasswordChangeView.as_view()
+
+
+class CustomUserPasswordChangeDoneView(PasswordChangeDoneView):
+    """
+    Renders template on successfully changing password.
+    """
+
+    template_name = "registration/password_change_done.html"
+
+
+custom_user_password_change_done_view = CustomUserPasswordChangeDoneView.as_view()
