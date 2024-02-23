@@ -1,7 +1,9 @@
-from django.core.exceptions import ImproperlyConfigured, ValidationError
+from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
 from django.conf import settings
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 
 
 class RedirectIfAuthenticatedMixin:
@@ -16,6 +18,8 @@ class RedirectIfAuthenticatedMixin:
     next_page = None
     redirect_authenticated_user = False
 
+    @method_decorator(csrf_protect)
+    @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         if self.redirect_authenticated_user and request.user.is_authenticated:
             print("dispatch called")

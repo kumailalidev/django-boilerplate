@@ -3,6 +3,14 @@
 
 {% block content %}
 
+{% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 {% if request.user.is_authenticated %}
   <h1><span>{{ request.user.username }},</span> Welcome to Django Web Framework</h1>
 {% else %}

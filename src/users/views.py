@@ -1,9 +1,12 @@
 from typing import Any
+from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render
+from django.template.response import TemplateResponse
 from django.views.generic import View
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib import messages
 
 from .mixins import RedirectIfAuthenticatedMixin
 from .forms import CustomUserCreationForm, CustomUserAuthenticationForm
@@ -67,3 +70,29 @@ class CustomUserLoginView(LoginView):
 
 
 custom_user_login_view = CustomUserLoginView.as_view()
+
+
+class CustomUserLogoutView(LogoutView):
+    """
+    Log out the user and display the 'You are logged out message'
+    inherited from django.contrib.auth.views.LogoutView
+
+    User will be redirected to url set in LOGOUT_REDIRECT_URL (by default value
+    is None) or to url generated using next_page value.
+
+    NOTE: Log out via GET requests is deprecated and will be removed
+    in Django 5.
+    """
+
+    next_page = None
+    template_name = "registration/logged_out.html"
+
+    # adding custom message
+    def post(self, request: WSGIRequest, *args: Any, **kwargs: Any) -> TemplateResponse:
+        response = super().post(request, *args, **kwargs)
+        messages.success(request, "You have been logged out successfully.")
+
+        return response
+
+
+custom_user_logout_view = CustomUserLogoutView.as_view()

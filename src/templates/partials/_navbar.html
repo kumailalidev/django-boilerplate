@@ -1,9 +1,22 @@
+{% load i18n %}
+
 <nav>
   <div>
     <h1>Django Web Framework</h1>
     <ul>
+      {% if request.user.is_authenticated %}
+      <li>@{{ request.user.username }}</li>
+      <!-- Logging out using GET method is deprecated in Django 5.0 -->
+      <li>
+        <form action="{% url 'users:logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">{% translate 'Log out' %}</button>
+        </form>
+      </li>
+      {% else %}
       <li><a href="{% url 'users:login' %}">Login</a></li>
       <li><a href="{% url 'users:signup' %}">Sign Up</a></li>
+      {% endif %}
     </ul>
   </div>
 </nav>
