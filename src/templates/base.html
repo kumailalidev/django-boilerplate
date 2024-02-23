@@ -11,12 +11,15 @@
 </head>
 
 <body>
-    <!-- content -->
-    {% block content %}
-    {% endblock %}
+  <!-- Navbar -->
+  {% include 'partials/_navbar.html' %}
 
-    <!-- script.js -->
-    <script defer src="{% static 'js/script.js' %}"></script>
+  <!-- content -->
+  {% block content %}
+  {% endblock %}
+
+  <!-- script.js -->
+  <script defer src="{% static 'js/script.js' %}"></script>
 </body>
 
 </html>

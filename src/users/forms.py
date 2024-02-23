@@ -2,7 +2,11 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation, get_user_model
-from django.contrib.auth.forms import UsernameField, ReadOnlyPasswordHashField
+from django.contrib.auth.forms import (
+    UsernameField,
+    ReadOnlyPasswordHashField,
+    AuthenticationForm,
+)
 
 CustomUserModel = get_user_model()
 
@@ -150,3 +154,9 @@ class CustomUserChangeForm(forms.ModelForm):
             user_permissions.queryset = user_permissions.queryset.select_related(
                 "content_type"
             )
+
+
+class CustomUserAuthenticationForm(AuthenticationForm):
+    """Authentication from"""
+
+    pass
