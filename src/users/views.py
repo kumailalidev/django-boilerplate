@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render
@@ -6,7 +7,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.urls import reverse_lazy
-from django.views.generic import View
+from django.views.generic import View, FormView
 from django.contrib.auth.views import (
     LoginView,
     LogoutView,
@@ -27,17 +28,24 @@ from .forms import (
     CustomUserSetPasswordForm,
 )
 
+LOGIN_REDIRECT_URL = settings.LOGIN_REDIRECT_URL
 
-class CustomUserSignupView(View):
+# TODO: Implement CustomUserProfileView
+# TODO: Instead of overriding dispatch method in CustomUserSignupView and
+# CustomUserPasswordResetView create a mixin called RedirectAuthenticatedUserMixin
+# to redirect the authenticated user.
+
+
+class CustomUserSignupView(FormView):
     """
     Display the sign up form and handles the
     user creation action.
     """
 
-    # TODO: Update view to generic FormView or any suitable
-    # class based view.
-
     redirect_to = "users:home"
+    form_class = CustomUserCreationForm
+    template_name = "registration/signup.html"
+    success_url = reverse_lazy("users:login")
 
     @method_decorator(sensitive_post_parameters())
     @method_decorator(csrf_protect)
@@ -49,27 +57,23 @@ class CustomUserSignupView(View):
 
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        form = CustomUserCreationForm()
-
-        return render(
-            request=request,
-            template_name="registration/signup.html",
-            context={"form": form},
+    def form_valid(self, form):
+        """If the form is valid create user and redirect to supplied URL."""
+        form.save()
+        messages.success(
+            request=self.request, message="Registration successful. Please login"
         )
 
-    def post(self, request, *args, **kwargs):
-        form = CustomUserCreationForm(data=request.POST or None)
+        return super().form_valid(form)
 
-        if form.is_valid():
-            form.save()
-            return HttpResponse("User Created")
-        else:
-            return render(
-                request=request,
-                template_name="registration/signup.html",
-                context={"form": form},
-            )
+    def form_invalid(self, form):
+        """If the form is invalid, render the invalid form and pass error messages"""
+        messages.error(
+            request=self.request,
+            message="Registration Unsuccessful. Please fix the errors.",
+        )
+
+        return super().form_invalid(form)
 
 
 custom_user_signup_view = CustomUserSignupView.as_view()

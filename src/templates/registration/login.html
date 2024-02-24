@@ -3,6 +3,15 @@
 
 {% block content %}
 
+<!-- messages -->
+{% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 {% if form.errors and not form.non_field_errors %}
   <p>
     {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
