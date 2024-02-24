@@ -5,6 +5,7 @@ import os
 import sys
 from pathlib import Path
 
+# [x] Investigate why environment variables are not updating without overwrite=True
 
 env = environ.Env(
     # set casting, default value

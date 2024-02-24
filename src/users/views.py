@@ -31,7 +31,9 @@ from .forms import (
 from .mixins import RedirectAuthenticatedUserMixin
 
 
-# TODO: Write docstrings for views.
+# [x]   Write docstrings for views.
+# [x]   Test all the accounts endpoints and check if login_required, csrf_protect
+#       and cache_control decorators are working as intended.
 
 
 class CustomUserProfileView(FormView):
