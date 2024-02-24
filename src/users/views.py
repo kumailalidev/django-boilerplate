@@ -1,3 +1,4 @@
+from django.http import HttpRequest, HttpResponseRedirect
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -7,6 +8,10 @@ from django.contrib.auth.views import (
     LogoutView,
     PasswordChangeView,
     PasswordChangeDoneView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
 )
 from django.contrib import messages
 
@@ -15,6 +20,8 @@ from .forms import (
     CustomUserCreationForm,
     CustomUserAuthenticationForm,
     CustomUserPasswordChangeForm,
+    CustomUserPasswordResetForm,
+    CustomUserSetPasswordForm,
 )
 
 
@@ -26,6 +33,8 @@ class CustomUserSignupView(RedirectIfAuthenticatedMixin, View):
 
     # TODO: Update view to generic FormView or any suitable
     # class based view.
+    # TODO: Remove RedirectIfAuthenticatedMixin and override
+    # dispatch method
 
     next_page = "users:home"
     redirect_authenticated_user = True
@@ -136,3 +145,75 @@ class CustomUserPasswordChangeDoneView(PasswordChangeDoneView):
 
 
 custom_user_password_change_done_view = CustomUserPasswordChangeDoneView.as_view()
+
+
+class CustomUserPasswordResetView(PasswordResetView):
+    """
+    Displays password reset form (email field only) and handles
+    sending email for password reset.
+    """
+
+    redirect_to = "users:home"
+    email_template_name = "registration/password_reset_email.html"
+    form_class = CustomUserPasswordResetForm
+    from_email = None
+    html_email_template_name = None
+    subject_template_name = "registration/password_reset_subject.txt"
+    success_url = reverse_lazy("users:password_reset_done")
+    template_name = "registration/password_reset_form.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        # Restrict view for already logged in users.
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse_lazy(self.redirect_to))
+
+        return super().dispatch(request, *args, **kwargs)
+
+
+custom_user_password_reset_view = CustomUserPasswordResetView.as_view()
+
+
+class CustomUserPasswordResetDoneView(PasswordResetDoneView):
+    """
+    Renders html template on successfully sending password reset email.
+    """
+
+    template_name = "registration/password_reset_done.html"
+
+
+custom_user_password_reset_done_view = CustomUserPasswordResetDoneView.as_view()
+
+
+class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):
+    """
+    On providing valid password reset URL it displays form for password
+    reset and handles the functionality for reset.
+    """
+
+    form_class = CustomUserSetPasswordForm
+    success_url = reverse_lazy("users:password_reset_complete")
+    template_name = "registration/password_reset_confirm.html"
+
+    # On successful password reset, send the success message
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(
+            request=self.request,
+            message="Password rest successfully. Please login using new credentials.",
+        )
+
+        return response
+
+
+custom_user_password_reset_confirm_view = CustomUserPasswordResetConfirmView.as_view()
+
+
+class CustomUserPasswordResetCompleteView(PasswordResetCompleteView):
+    """
+    Renders template on successful password reset.
+    """
+
+    template_name = "registration/password_reset_complete.html"
+
+
+custom_user_password_reset_complete_view = CustomUserPasswordResetCompleteView.as_view()

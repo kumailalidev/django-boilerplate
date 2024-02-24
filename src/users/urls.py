@@ -7,6 +7,10 @@ from .views import (
     custom_user_logout_view,
     custom_user_password_change_view,
     custom_user_password_change_done_view,
+    custom_user_password_reset_view,
+    custom_user_password_reset_done_view,
+    custom_user_password_reset_confirm_view,
+    custom_user_password_reset_complete_view,
 )
 
 app_name = "users"
@@ -26,8 +30,28 @@ urlpatterns = [
         name="password_change",
     ),
     path(
-        route="password-change-done/",
+        route="password-change/done/",
         view=custom_user_password_change_done_view,
         name="password_change_done",
+    ),
+    path(
+        route="password-reset/",
+        view=custom_user_password_reset_view,
+        name="password_reset",
+    ),
+    path(
+        route="password-reset/done/",
+        view=custom_user_password_reset_done_view,
+        name="password_reset_done",
+    ),
+    path(
+        route="password-reset/confirm/<uidb64>/<token>/",
+        view=custom_user_password_reset_confirm_view,
+        name="password_reset_confirm",
+    ),
+    path(
+        route="password-reset/complete/",
+        view=custom_user_password_reset_complete_view,
+        name="password_reset_complete",
     ),
 ]

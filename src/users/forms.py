@@ -7,6 +7,8 @@ from django.contrib.auth.forms import (
     ReadOnlyPasswordHashField,
     AuthenticationForm,
     PasswordChangeForm,
+    PasswordResetForm,
+    SetPasswordForm,
 )
 
 CustomUserModel = get_user_model()
@@ -167,6 +169,24 @@ class CustomUserPasswordChangeForm(PasswordChangeForm):
     """
     A form that lets a user change their password by entering their old
     password.
+    """
+
+    pass
+
+
+class CustomUserPasswordResetForm(PasswordResetForm):
+    """
+    A form that lets a user reset their password by entering their email
+    address.
+    """
+
+    pass
+
+
+class CustomUserSetPasswordForm(SetPasswordForm):
+    """
+    A form that lets a user set their password without entering the old
+    password
     """
 
     pass

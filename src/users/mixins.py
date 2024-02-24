@@ -1,34 +1,30 @@
-from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
 from django.conf import settings
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
 
 
 class RedirectIfAuthenticatedMixin:
     """
-    Redirects already authenticated use to redirect url defined in
+    Redirects already authenticated user to redirect url defined in
     LOGIN_REDIRECT_URL (default to '/accounts/profile/') else redirected
     to url generated using next_page value.
     """
 
     # TODO: Add support for REDIRECT_FIELD_NAME (i.e. next field) for
     # redirection.
+
     next_page = None
     redirect_authenticated_user = False
 
-    @method_decorator(csrf_protect)
-    @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         if self.redirect_authenticated_user and request.user.is_authenticated:
-            print("dispatch called")
             redirect_to = self.get_success_url()
             if redirect_to == self.request.path:
                 raise ValueError(
                     "Redirection loop for authenticated user detected. Check that "
                     "your LOGIN_REDIRECT_URL doesn't point to a login page."
                 )
+            print("Redirecting to:", str(redirect_to))
             return HttpResponseRedirect(redirect_to)
 
         return super().dispatch(request, *args, **kwargs)
