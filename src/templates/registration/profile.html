@@ -1,29 +1,20 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block content %}
-
-<!-- messages -->
-{% if messages %}
-<div>
-  <ul>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-</div>
-{% endif %}
-
-<div>
-
-  <form action="." method="post">
-    {% csrf_token %}
-
-    {{form.as_div}}
-
-    <hr>
-    <button type="submit">Update Information</button>
-  </form>
-
-</div>
-
+  <!-- messages -->
+  {% if messages %}
+    <div>
+      <ul>
+        {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  <div>
+    <form action="." method="post">
+      {% csrf_token %}
+      {{ form.as_div }}
+      <hr>
+      <button type="submit">{% translate 'Update information' %}</button>
+    </form>
+  </div>
 {% endblock %}

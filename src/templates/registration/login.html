@@ -1,62 +1,49 @@
 {% extends "base.html" %}
 {% load i18n static %}
-
 {% block content %}
-
-<!-- messages -->
-{% if messages %}
-  <ul>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
-
-{% if form.errors and not form.non_field_errors %}
-  <p>
-    {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
-  </p>
-{% endif %}
-
-{% if form.non_field_errors %}
-  {% for error in form.non_field_errors %}
-  <p>
-      {{ error }}
-  </p>
-  {% endfor %}
-{% endif %}
-
-<div>
-  {% if user.is_authenticated %}
-  <p>
-  {% blocktranslate trimmed %}
-      You are authenticated as {{ username }}, but are not authorized to
-      access this page. Would you like to login to a different account?
-  {% endblocktranslate %}
-  </p>
+  <!-- messages -->
+  {% if messages %}
+    <ul>
+      {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+    </ul>
   {% endif %}
-
-  <form action="" method="post">
-    {% csrf_token %}
-    <div>
-      {{ form.username.errors }}
-      {{ form.username.label_tag }} {{ form.username }}
-    </div>
-    <div>
-      {{ form.password.errors }}
-      {{ form.password.label_tag }} {{ form.password }}
-      <input type="hidden" name="next" value="{{ next }}">
-    </div>
-    {% url 'users:password_reset' as password_reset_url %}
-    {% if password_reset_url %}
-    <div>
-      <a href="{{ password_reset_url }}">{% translate 'Forgotten your password or username?' %}</a>
-    </div>
+  {% if form.errors and not form.non_field_errors %}
+    <p>
+      {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+    </p>
+  {% endif %}
+  {% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+  {% endif %}
+  <div>
+    {% if user.is_authenticated %}
+      <p>
+        {% blocktranslate trimmed %}
+          You are authenticated as {{ username }}, but are not authorized to
+          access this page. Would you like to login to a different account?
+        {% endblocktranslate %}
+      </p>
     {% endif %}
-    <div>
-      <input type="submit" value="{% translate 'Log in' %}">
-    </div>
-  </form>
-</div>
-
+    <form action="" method="post">
+      {% csrf_token %}
+      <div>
+        {{ form.username.errors }}
+        {{ form.username.label_tag }} {{ form.username }}
+      </div>
+      <div>
+        {{ form.password.errors }}
+        {{ form.password.label_tag }} {{ form.password }}
+        <input type="hidden" name="next" value="{{ next }}">
+      </div>
+      {% url 'users:password_reset' as password_reset_url %}
+      {% if password_reset_url %}
+        <div>
+          <a href="{{ password_reset_url }}">{% translate 'Forgotten your password or username?' %}</a>
+        </div>
+      {% endif %}
+      <div>
+        <input type="submit" value="{% translate 'Log in' %}">
+      </div>
+    </form>
+  </div>
 {% endblock %}

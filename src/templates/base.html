@@ -1,25 +1,18 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Django</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
-  <!-- Navbar -->
-  {% include 'partials/_navbar.html' %}
-
-  <!-- content -->
-  {% block content %}
-  {% endblock %}
-
-  <!-- script.js -->
-  <script defer src="{% static 'js/script.js' %}"></script>
-</body>
-
+  </head>
+  <body>
+    <!-- Navbar -->
+    {% include 'partials/_navbar.html' %}
+    <!-- content -->
+    {% block content %}{% endblock %}
+    <!-- script.js -->
+    <script defer src="{% static 'js/script.js' %}"></script>
+  </body>
 </html>
