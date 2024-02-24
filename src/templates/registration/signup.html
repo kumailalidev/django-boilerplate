@@ -70,7 +70,7 @@
   {% url 'users:login' as login_url %}
   {% if login_url %}
   <div>
-    <p>{% translate 'Already have a account? ' %}<a href="{{ password_reset_url }}">{% translate 'Click here to login.' %}</a></p>
+    <p>{% translate 'Already have a account? ' %}<a href="{{ login_url }}">{% translate 'Click here to login.' %}</a></p>
   </div>
   {% endif %}
 </div>

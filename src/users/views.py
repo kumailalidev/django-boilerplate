@@ -1,6 +1,10 @@
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
 from django.urls import reverse_lazy
 from django.views.generic import View
 from django.contrib.auth.views import (
@@ -15,7 +19,6 @@ from django.contrib.auth.views import (
 )
 from django.contrib import messages
 
-from .mixins import RedirectIfAuthenticatedMixin
 from .forms import (
     CustomUserCreationForm,
     CustomUserAuthenticationForm,
@@ -25,7 +28,7 @@ from .forms import (
 )
 
 
-class CustomUserSignupView(RedirectIfAuthenticatedMixin, View):
+class CustomUserSignupView(View):
     """
     Display the sign up form and handles the
     user creation action.
@@ -33,11 +36,18 @@ class CustomUserSignupView(RedirectIfAuthenticatedMixin, View):
 
     # TODO: Update view to generic FormView or any suitable
     # class based view.
-    # TODO: Remove RedirectIfAuthenticatedMixin and override
-    # dispatch method
 
-    next_page = "users:home"
-    redirect_authenticated_user = True
+    redirect_to = "users:home"
+
+    @method_decorator(sensitive_post_parameters())
+    @method_decorator(csrf_protect)
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        # Restrict view for already logged in users.
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse_lazy(self.redirect_to))
+
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         form = CustomUserCreationForm()
@@ -75,8 +85,6 @@ class CustomUserLoginView(LoginView):
     it is '/accounts/profile/') else redirected to url
     generated using next_page value.
     """
-
-    # TODO: use authentication_from property and see results
 
     next_page = "users:home"  # view name
     form_class = CustomUserAuthenticationForm
@@ -166,7 +174,6 @@ class CustomUserPasswordResetView(PasswordResetView):
         # Restrict view for already logged in users.
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse_lazy(self.redirect_to))
-
         return super().dispatch(request, *args, **kwargs)
 
 

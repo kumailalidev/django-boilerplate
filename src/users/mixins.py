@@ -2,6 +2,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
 from django.conf import settings
 
+LOGIN_REDIRECT_URL = settings.LOGIN_REDIRECT_URL
+
 
 class RedirectIfAuthenticatedMixin:
     """
@@ -14,10 +16,10 @@ class RedirectIfAuthenticatedMixin:
     # redirection.
 
     next_page = None
-    redirect_authenticated_user = False
 
     def dispatch(self, request, *args, **kwargs):
-        if self.redirect_authenticated_user and request.user.is_authenticated:
+        if request.user.is_authenticated:
+            print("User is already authenticated")
             redirect_to = self.get_success_url()
             if redirect_to == self.request.path:
                 raise ValueError(
@@ -37,4 +39,4 @@ class RedirectIfAuthenticatedMixin:
         if self.next_page:
             return resolve_url(self.next_page)
         else:
-            return resolve_url(settings.LOGIN_REDIRECT_URL)
+            return resolve_url(LOGIN_REDIRECT_URL)
