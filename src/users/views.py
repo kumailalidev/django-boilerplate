@@ -1,6 +1,5 @@
-from django.conf import settings
-from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse as HttpResponse
+from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -17,10 +16,13 @@ from django.contrib.auth.views import (
     PasswordResetConfirmView,
     PasswordResetCompleteView,
 )
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 from django.contrib import messages
 
 from .forms import (
     CustomUserCreationForm,
+    CustomUserProfileForm,
     CustomUserAuthenticationForm,
     CustomUserPasswordChangeForm,
     CustomUserPasswordResetForm,
@@ -29,7 +31,41 @@ from .forms import (
 from .mixins import RedirectAuthenticatedUserMixin
 
 
-# TODO: Implement CustomUserProfileView
+# TODO: Write docstrings for views.
+
+
+class CustomUserProfileView(FormView):
+    """
+    Displays basic user information, and handles process of
+    updating.
+    """
+
+    template_name = "registration/profile.html"
+    form_class = CustomUserProfileForm
+    success_url = reverse_lazy("users:profile")
+
+    @method_decorator(csrf_protect)
+    @method_decorator(login_required)
+    @method_decorator(cache_control(no_cache=True, must_revalidate=True, no_store=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, "Profile updated successfully.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Profile update unsuccessful. Please fix errors.")
+        return super().form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["instance"] = self.request.user
+        return kwargs
+
+
+custom_user_profile_view = CustomUserProfileView.as_view()
 
 
 class CustomUserSignupView(RedirectAuthenticatedUserMixin, FormView):

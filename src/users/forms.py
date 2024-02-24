@@ -14,6 +14,24 @@ from django.contrib.auth.forms import (
 CustomUserModel = get_user_model()
 
 
+class CustomUserProfileForm(forms.ModelForm):
+    """
+    A from for displaying and changing users basic information.
+    NOTE: default UserChangeForm can also be used instead.
+    """
+
+    class Meta:
+        model = CustomUserModel
+        fields = (
+            "email",
+            "username",
+            "date_of_birth",
+            "first_name",
+            "middle_name",
+            "last_name",
+        )
+
+
 class CustomUserCreationForm(forms.ModelForm):
     """
     A form that creates a user, with no privileges, from the given username,
@@ -124,6 +142,8 @@ class CustomUserCreationForm(forms.ModelForm):
 
 
 class CustomUserChangeForm(forms.ModelForm):
+    """A from for displaying and changing users information"""
+
     password = ReadOnlyPasswordHashField(
         label=_("Password"),
         help_text=_(
