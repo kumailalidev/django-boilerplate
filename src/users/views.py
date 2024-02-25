@@ -111,6 +111,18 @@ class CustomUserSignupView(RedirectAuthenticatedUserMixin, FormView):
 custom_user_signup_view = CustomUserSignupView.as_view()
 
 
+class CustomUserEmailVerificationView(FormView):
+    """
+    Handles email verification process, on successful email verification
+    redirects users to login page will success message.
+    """
+
+    pass
+
+
+custom_user_email_verification_view = CustomUserEmailVerificationView.as_view()
+
+
 class CustomUserLoginView(LoginView):
     """
     Display the login form and handles the login action,

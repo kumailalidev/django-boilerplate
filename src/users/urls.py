@@ -5,6 +5,7 @@ from .views import (
     custom_user_profile_view,
     custom_user_login_view,
     custom_user_signup_view,
+    custom_user_email_verification_view,
     custom_user_logout_view,
     custom_user_password_change_view,
     custom_user_password_change_done_view,
@@ -25,6 +26,11 @@ urlpatterns = [
     path(route="profile/", view=custom_user_profile_view, name="profile"),
     path(route="login/", view=custom_user_login_view, name="login"),
     path(route="signup/", view=custom_user_signup_view, name="signup"),
+    path(
+        route="signup/verify/<uidb64>/<token>/",
+        view=custom_user_email_verification_view,
+        name="verify",
+    ),
     path(route="logout/", view=custom_user_logout_view, name="logout"),
     path(
         route="password-change/",

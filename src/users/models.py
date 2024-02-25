@@ -64,6 +64,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             "Unselect this instead of deleting accounts."
         ),
     )
+    # TODO Update helptext, make more descriptive.
+    is_verified = models.BooleanField(
+        verbose_name=_("Is Verified"),
+        default=False,
+        help_text=_(
+            "Designates whether the user has verified their email or not. "
+            "If email is not verified, the user can not log into site but still can authenticate."
+        ),
+    )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
     objects = CustomUserManager()
