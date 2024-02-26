@@ -5,33 +5,31 @@ import os
 import sys
 from pathlib import Path
 
-# [x] Investigate why environment variables are not updating without overwrite=True
 
 env = environ.Env(
-    # set casting, default value
-    ENVIRONMENT=(str, "development")
+    ENVIRONMENT=(str, "development"),
 )
 
 # '.env' directory path
-ENV_DIR = Path(__file__).parent.parent
+ENV_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 # '.env' file
 ENV_FILE = ENV_DIR / ".env"
 if Path(ENV_FILE).exists():
     # Take environment variables form .env file
-    env.read_env(ENV_FILE, overwrite=True)
+    env.read_env(env_file=str(ENV_FILE), overwrite=True)
 
 ENVIRONMENT = env("ENVIRONMENT")
 
 
 def main():
-    """Run administrative tasks."""
-
+    # Set DJANGO_SETTINGS_MODULE environment variable.
     if ENVIRONMENT == "development":
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.development")
     elif ENVIRONMENT == "production":
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.production")
 
+    # Run administrative tasks
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

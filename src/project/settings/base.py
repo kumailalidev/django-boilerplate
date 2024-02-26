@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent  # '/src' or '/app'
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent  # '/src' or '/app'
 
 # '.env' file directory path
 ENV_DIR = Path(__file__).parent.parent
@@ -16,10 +16,10 @@ env = environ.Env(
 ENV_FILE = ENV_DIR / ".env"
 if Path(ENV_FILE).exists():
     # Take environment variables form .env file
-    env.read_env(ENV_FILE)
+    env.read_env(str(ENV_FILE), overwrite=True)
 
 # SECRET KEY
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env.str("SECRET_KEY")
 
 # DEBUG SETTING
 DEBUG = False
