@@ -1,12 +1,12 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.urls import reverse_lazy
-from django.views.generic import View, FormView, TemplateView
+from django.views.generic import View, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import (
     LoginView,
@@ -178,25 +178,7 @@ class CustomUserSignupView(RedirectAuthenticatedUserMixin, FormView):
 
 custom_user_signup_view = CustomUserSignupView.as_view()
 
-
-INTERNAL_RESET_SESSION_TOKEN = "_email_verification_token"
-
-
-class CustomUserEmailVerificationConfirmView(FormView):
-    """
-    Handles email verification process, on successful email verification
-    redirects users to login page will success message else display related
-    error.
-    """
-
-    pass
-
-
-# custom_user_email_verification_confirm_view = (
-#     CustomUserEmailVerificationConfirmView.as_view()
-# )
-
-INTERNAL_RESET_SESSION_TOKEN = "_email_verification_token"
+INTERNAL_EMAIL_VERIFICATION_SESSION_TOKEN = "_email_verification_token"
 
 
 def custom_user_email_verification_confirm_view(request, *args, **kwargs):
@@ -207,11 +189,13 @@ def custom_user_email_verification_confirm_view(request, *args, **kwargs):
     """
     # TODO: Convert to class based view
 
+    # validate if URL is properly configured
     if "uidb64" not in kwargs or "token" not in kwargs:
         raise ImproperlyConfigured(
             "The URL path must contain 'uidb64' and 'token' parameters."
         )
 
+    success_url = reverse_lazy("users:login")
     rest_url_token = "email-verification"
     template_name = "registration/email_verification_confirm.html"
     token_generator = default_email_verification_token_generator
@@ -223,12 +207,15 @@ def custom_user_email_verification_confirm_view(request, *args, **kwargs):
         token = kwargs["token"]
         if token == rest_url_token:
             # get the token from session
-            session_token = request.session.get(INTERNAL_RESET_SESSION_TOKEN)
+            session_token = request.session.get(
+                INTERNAL_EMAIL_VERIFICATION_SESSION_TOKEN
+            )
             if token_generator.check_token(user, session_token):
-                # if the token is valid, set is_verified to True and redirect to the
-                # email verification confirm template.
+                # if the token is valid, set is_verified to True
                 user.is_verified = True
                 user.save()
+
+                # update context
                 context["validlink"] = True
 
                 # set success message
@@ -236,6 +223,7 @@ def custom_user_email_verification_confirm_view(request, *args, **kwargs):
                     request=request,
                     message=f"You email '{user.email}' is verified successfully.",
                 )
+
                 return render(
                     request=request, template_name=template_name, context=context
                 )
@@ -246,7 +234,7 @@ def custom_user_email_verification_confirm_view(request, *args, **kwargs):
                 # login form at a URL without the token. That
                 # avoids the possibility of leaking the token in the
                 # HTTP Referer header.
-                request.session[INTERNAL_RESET_SESSION_TOKEN] = token
+                request.session[INTERNAL_EMAIL_VERIFICATION_SESSION_TOKEN] = token
                 redirect_url = request.path.replace(token, rest_url_token)
 
                 return HttpResponseRedirect(redirect_to=redirect_url)
