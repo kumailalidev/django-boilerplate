@@ -1,0 +1,11 @@
+{% load i18n %}
+{% autoescape off %}
+  {% blocktranslate %}Email verification{% endblocktranslate %}
+  {% translate "Please go to the following page and confirm your email" %}
+  {% block reset_link %}
+    {{ protocol }}://{{ domain }}{% url 'users:custom_user_email_verification_confirm' uidb64=uid token=token %}
+  {% endblock %}
+  {% translate 'Your username, in case you’ve forgotten:' %} {{ user.get_username }}
+  {% translate "Thanks for using our site!" %}
+  {% blocktranslate %}The {{ site_name }} team{% endblocktranslate %}
+{% endautoescape %}

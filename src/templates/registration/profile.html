@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
+  <!-- email verification -->
+  {% if not request.user.is_verified %}
+    <div>
+      <p>Your email address '{{ request.user.email }}' is not verified.</p>
+      <form action="{% url 'users:send-email-verification-mail' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">{% translate 'Verify' %}</button>
+      </form>
+    </div>
+  {% else %}
+  <div>
+    <p>Your email is <strong>verified</strong></p>
+  </div>
+  {% endif %}
+
   <!-- messages -->
   {% if messages %}
     <div>
@@ -9,6 +24,8 @@
       </ul>
     </div>
   {% endif %}
+
+  <!-- user profile -->
   <div>
     <form action="." method="post">
       {% csrf_token %}

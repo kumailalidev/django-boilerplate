@@ -14,6 +14,9 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+# MESSAGES
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
+
 # EMAIL
 EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
