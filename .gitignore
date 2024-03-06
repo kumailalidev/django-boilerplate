@@ -1,6 +1,7 @@
 # Project (Root) files and folders/
 .vscode/
 etcetera/
+todo.txt
 
 # Django stuff:
 *.log
