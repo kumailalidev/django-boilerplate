@@ -4,7 +4,10 @@ from .base import *
 DEBUG = True
 
 # APPS
-INSTALLED_APPS += ["debug_toolbar"]
+INSTALLED_APPS += [
+    "django_extensions",
+    "debug_toolbar",
+]
 
 # MIDDLEWARES
 MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
