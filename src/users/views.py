@@ -41,6 +41,7 @@ from .utils import send_email_verification_mail_to_user, get_user
 #       and cache_control decorators are working as intended.
 # [x]   Change expiration time of token generated for email and password verification.
 # [x]   Add translation to success messages.
+# [x]   Add Django messages framework storage type (Local Storage or Cookie based) in settings.py
 
 
 class SendEmailVerificationMailView(LoginRequiredMixin, View):
@@ -97,6 +98,8 @@ class CustomUserProfileView(FormView):
     Displays basic user information, and handles process of
     updating.
     """
+
+    # TODO: Use LoginRequiredMixin instead of using decorator, and use never_cache instead of cache_control
 
     template_name = "registration/profile.html"
     form_class = CustomUserProfileForm
@@ -239,7 +242,6 @@ def custom_user_email_verification_confirm_view(request, *args, **kwargs):
 
                 return HttpResponseRedirect(redirect_to=redirect_url)
 
-    # render email verification confirm template
     messages.error(
         request=request,
         message=f"Email verification failed.",
