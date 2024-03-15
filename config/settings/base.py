@@ -111,7 +111,7 @@ STATICFILES_DIRS = [str(PROJECT_DIR / "static")]
 
 # MEDIA FILES (Uploaded by users)
 MEDIA_URL = "/media/"
-MEDIA_ROOT = str(PROJECT_DIR / "media")  # media folder location
+MEDIA_ROOT = str(BASE_DIR / "mediafiles")  # media folder location
 
 # EMAIL
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

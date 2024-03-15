@@ -6,4 +6,5 @@ app_name = "greetings"
 
 urlpatterns = [
     path(route="", view=views.home, name="home"),
+    path(route="images/", view=views.images, name="images"),
 ]
