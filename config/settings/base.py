@@ -63,10 +63,10 @@ TEMPLATES = [
 
 # DATABASE
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": PROJECT_DIR / "db.sqlite3",
-    }
+    "default": env.db(
+        "DATABASE_URL",
+        default="sqlite:///db.sqlite3",
+    )
 }
 
 WSGI_APPLICATION = "config.wsgi.application"
@@ -105,15 +105,13 @@ AUTH_USER_MODEL = "users.CustomUser"
 # you can define a list of directories (STATICFILES_DIRS) in
 # your settings file where Django will also look for static
 # files
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"  # used by collectstatic command
-STATICFILES_DIRS = [
-    PROJECT_DIR / "static",
-]
+STATIC_URL = "/static/"
+STATIC_ROOT = str(BASE_DIR / "staticfiles")  # used by collectstatic command
+STATICFILES_DIRS = [str(PROJECT_DIR / "static")]
 
 # MEDIA FILES (Uploaded by users)
-MEDIA_URL = "media/"
-MEDIA_ROOT = PROJECT_DIR / "media"  # media folder location
+MEDIA_URL = "/media/"
+MEDIA_ROOT = str(PROJECT_DIR / "media")  # media folder location
 
 # EMAIL
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
