@@ -182,6 +182,13 @@ TEMPLATES = [
     },
 ]
 
+# FIXTURES
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#fixture-dirs
+FIXTURE_DIRS = []  # Default
+
+# TODO: Add SECURITY settings
+
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
