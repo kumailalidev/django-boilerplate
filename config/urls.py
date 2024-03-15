@@ -9,8 +9,8 @@ DEBUG = settings.DEBUG
 urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url="/static/images/icons/favicon.ico")),
     path("admin/", admin.site.urls),
-    path("accounts/", include("users.urls", namespace="users")),
-    path("greetings/", include("greetings.urls")),
+    path("accounts/", include("project.users.urls", namespace="users")),
+    path("greetings/", include("project.greetings.urls")),
 ]
 
 # for development environment only

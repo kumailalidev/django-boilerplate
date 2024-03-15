@@ -1,31 +1,20 @@
 import environ
 from pathlib import Path
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent  # '/src' or '/app'
-
-# '.env' file directory path
-ENV_DIR = Path(__file__).parent.parent
+# '/src', '/app', or '/[repository name]' directory
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+PROJECT_DIR = BASE_DIR / "project"
 
 # load '.env' file
-env = environ.Env(
-    ALLOWED_HOSTS=(list, []),
-)
+env = environ.Env()
 
-ENV_FILE = ENV_DIR / ".env"
+ENV_FILE = BASE_DIR / ".env"
 if Path(ENV_FILE).exists():
     # Take environment variables form .env file
     env.read_env(str(ENV_FILE), overwrite=True)
 
-# SECRET KEY
-SECRET_KEY = env.str("SECRET_KEY")
-
 # DEBUG SETTING
-DEBUG = False
-
-# ALLOWED HOSTS
-ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+DEBUG = env.bool("DJANGO_DEBUG", False)
 
 # APPS
 DJANGO_APPS = [
@@ -38,8 +27,8 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = []
 LOCAL_APPS = [
-    "users.apps.UsersConfig",
-    "greetings.apps.GreetingsConfig",
+    "project.users.apps.UsersConfig",
+    "project.greetings.apps.GreetingsConfig",
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -54,12 +43,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "project.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [PROJECT_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -76,11 +65,11 @@ TEMPLATES = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": PROJECT_DIR / "db.sqlite3",
     }
 }
 
-WSGI_APPLICATION = "project.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -119,12 +108,12 @@ AUTH_USER_MODEL = "users.CustomUser"
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"  # used by collectstatic command
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    PROJECT_DIR / "static",
 ]
 
-# MEDIA FILES (Uploaded by users) (Development environment only)
+# MEDIA FILES (Uploaded by users)
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"  # media folder location
+MEDIA_ROOT = PROJECT_DIR / "media"  # media folder location
 
 # EMAIL
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

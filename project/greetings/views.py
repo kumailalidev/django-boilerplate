@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from greetings.models import Greeting
+from .models import Greeting
 
 
 def home(request):
