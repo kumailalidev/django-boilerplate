@@ -11,7 +11,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("project.users.urls", namespace="users")),
     path("greetings/", include("project.greetings.urls")),
-]
+] + static(
+    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+)  # Serving media files uploaded by a user
 
 # for development environment only
 if DEBUG:
@@ -21,5 +23,3 @@ if DEBUG:
     ]
     # Serving static files from STATIC_ROOT folder
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    # Serving media files uploaded by a user during development
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
