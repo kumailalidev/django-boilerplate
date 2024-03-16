@@ -1,9 +1,4 @@
 [run]
-include =
-    src/*
-omit =
-    # omit anything in a project directory
-    */project/*
-    # omit everything in tests directory anywhere
-    */tests/*
+include = project/*
+omit = *migrations*, *tests*
 plugins = django_coverage_plugin
