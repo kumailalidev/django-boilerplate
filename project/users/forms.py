@@ -61,6 +61,7 @@ class BaseUserCreationForm(forms.ModelForm):
         return password2
 
     def _post_clean(self):
+        super()._post_clean()
         # Validate the password after self.instance is updated with form data
         # by super()
         password = self.cleaned_data.get("password2")
@@ -90,7 +91,7 @@ class UserCreationForm(BaseUserCreationForm):
         ):
             self._update_errors(
                 ValidationError(
-                    params={
+                    message={
                         "username": self.instance.unique_error_message(
                             self._meta.model, ["username"]
                         )

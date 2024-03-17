@@ -67,9 +67,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = (
         "username",
         "email",
-        "date_of_birth",
         "is_staff",
-        "is_verified",
     )
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
     search_fields = ("username", "email", "first_name", "last_name")
