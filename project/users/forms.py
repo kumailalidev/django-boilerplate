@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation, get_user_model
-from django.contrib.auth.forms import UsernameField
+from django.contrib.auth.forms import UsernameField, ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
 
 UserModel = get_user_model()
@@ -101,3 +101,32 @@ class UserCreationForm(BaseUserCreationForm):
             return username
 
     # TODO: add clean_email method, to reject email address that differ only in case only after testing
+
+
+class UserChangeForm(forms.ModelForm):
+    password = ReadOnlyPasswordHashField(
+        label=_("Password"),
+        help_text=_(
+            "Raw passwords are not stored, so there is no way to see this "
+            "user's password, but you can change the password using "
+            '<a href="{}">this form</a>.'
+        ),
+    )
+
+    class Meta:
+        model = UserModel
+        fields = "__all__"
+        field_classes = {"username": UsernameField}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        password = self.fields.get("password")
+        if password:
+            password.help_text = password.help_text.format(
+                f"../../{self.instance.pk}/password/"
+            )
+        user_permissions = self.fields.get("user_permissions")
+        if user_permissions:
+            user_permissions.queryset = user_permissions.queryset.select_related(
+                "content_type"
+            )
