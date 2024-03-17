@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from .validators import UsernameValidator, NameValidator
+from .managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -70,7 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name=_("date joined"), default=timezone.now
     )
 
-    # TODO: Add manager
+    objects = UserManager()
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
