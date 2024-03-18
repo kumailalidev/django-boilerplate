@@ -29,20 +29,19 @@
       <div>
         {{ form.username.errors }}
         {{ form.username.label_tag }} {{ form.username }}
-      </div>
-      <div>
-        {{ form.date_of_birth.errors }}
-        {{ form.date_of_birth.label_tag }} {{ form.date_of_birth }}
+        {{ form.username.help_text }}
       </div>
       <div>
         <!-- only password2 field contains error messages -->
         {{ form.password2.errors }}
       </div>
-      <div>{{ form.password1.label_tag }} {{ form.password1 }}</div>
+      <div>
+        {{ form.password1.label_tag }} {{ form.password1 }}
+        {{ form.password1.help_text }}
+      </div>
       <div>
         {{ form.password2.label_tag }} {{ form.password2 }}
-        <!-- hidden field for REDIRECT_FIELD_NAME  -->
-        <input type="hidden" name="next" value="{{ next }}">
+        {{ form.password2.help_text }}
       </div>
       <hr>
       <h1>Optional Information</h1>
@@ -50,14 +49,16 @@
       <div>
         {{ form.first_name.errors }}
         {{ form.first_name.label_tag }} {{ form.first_name }}
-      </div>
-      <div>
-        {{ form.middle_name.errors }}
-        {{ form.middle_name.label_tag }} {{ form.middle_name }}
+        {{ form.first_name.help_text }}
       </div>
       <div>
         {{ form.last_name.errors }}
         {{ form.last_name.label_tag }} {{ form.last_name }}
+        {{ form.last_name.help_text }}
+      </div>
+      <div>
+        <!-- hidden field for REDIRECT_FIELD_NAME  -->
+        <input type="hidden" name="next" value="{{ next }}">
       </div>
       <hr>
       <div>
