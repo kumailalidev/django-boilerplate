@@ -15,16 +15,13 @@ from .mixins import RedirectURLMixin
 from .forms import UserCreationForm, AuthenticationForm
 
 LOGIN_REDIRECT_URL = settings.LOGIN_REDIRECT_URL
+LOGIN_URL = settings.LOGIN_URL
 
 
 class UserSignUpView(RedirectURLMixin, FormView):
     """
     Display the sign up form and handle the sign up action.
     """
-
-    # TODO: After creating UserLoginView create SIGNUP_REDIRECT_URL constant
-    # in settings and set value to UserLoginView route and update get_default_redirect_url
-    # method.
 
     form_class = UserCreationForm
     authentication_form = None
@@ -41,7 +38,7 @@ class UserSignUpView(RedirectURLMixin, FormView):
             if redirect_to == self.request.path:
                 raise ValueError(
                     "Redirection loop for authenticated user detected. Check that "
-                    "your LOGIN_REDIRECT_URL doesn't point to a signup page."
+                    "your LOGIN_URL doesn't point to a signup page."
                 )
             return HttpResponseRedirect(redirect_to)
         return super().dispatch(request, *args, **kwargs)
@@ -51,7 +48,7 @@ class UserSignUpView(RedirectURLMixin, FormView):
         if self.next_page:
             return resolve_url(self.next_page)
         else:
-            return resolve_url(LOGIN_REDIRECT_URL)
+            return resolve_url(LOGIN_URL)
 
     def get_form_class(self):
         return self.authentication_form or self.form_class
