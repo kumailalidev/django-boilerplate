@@ -7,14 +7,14 @@
         <li>@{{ request.user.username }}</li>
         <!-- Logging out using GET method is deprecated in Django 5.0 -->
         <li>
-          <form action="" method="post">
+          <form action="{% url 'users:logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">{% translate 'Log out' %}</button>
           </form>
         </li>
       {% else %}
         <li>
-          <a href="">Login</a>
+          <a href="{% url 'users:login' %}">Login</a>
         </li>
         <li>
           <a href="{% url 'users:signup' %}">Sign Up</a>
