@@ -41,7 +41,7 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # DATABASE
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-sqlite_path = str(BASE_DIR / "db.sqlite3")
+sqlite_path = str(PROJECT_DIR / "db.sqlite3")
 DATABASES = {
     # PostgreSQL:   postgres://user:password@hostname_or_ip:port/database_name
     # SQLite:       sqlite:////path/to/database/file (e.g. sqlite:///db.sqlite3)
@@ -145,7 +145,7 @@ MIDDLEWARE = [
 # STATIC
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = str(BASE_DIR / "staticfiles")
+STATIC_ROOT = str(PROJECT_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
@@ -159,7 +159,7 @@ STATICFILES_FINDERS = [
 # MEDIA
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = str(BASE_DIR / "mediafiles")
+MEDIA_ROOT = str(PROJECT_DIR / "mediafiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
 
