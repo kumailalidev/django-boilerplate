@@ -98,7 +98,7 @@ LOGIN_REDIRECT_URL = "/accounts/profile/"  # Default
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = "/accounts/login/"  # Default
 # https://docs.djangoproject.com/en/dev/ref/settings/#logout-redirect-url
-LOGOUT_REDIRECT_URL = "/accounts/login/"  # Default is None
+LOGOUT_REDIRECT_URL = None  # Default
 # https://docs.djangoproject.com/en/dev/ref/settings/#password-reset-timeout
 PASSWORD_RESET_TIMEOUT = 259200  # Default (3 days, in seconds)
 

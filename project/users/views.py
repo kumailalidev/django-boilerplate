@@ -151,6 +151,7 @@ class UserLogoutView(RedirectURLMixin, TemplateView):
 
     http_method_names = ["post", "options"]
     template_name = "registration/logged_out.html"
+    next_page = "users:login"
     extra_context = None
 
     @method_decorator(csrf_protect)

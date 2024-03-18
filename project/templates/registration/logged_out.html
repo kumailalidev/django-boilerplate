@@ -2,6 +2,7 @@
 {% load i18n %}
 {% block content %}
   <h1>{{ title }}</h1>
+  <p>{{ subtitle }}</p>
   {% if messages %}
     <ul>
       {% for message in messages %}<li>{{ message }}</li>{% endfor %}
