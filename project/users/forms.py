@@ -101,12 +101,9 @@ class UserCreationForm(BaseUserCreationForm):
         else:
             return username
 
-    # TODO: add clean_email method, to reject email address that differ only in case only after testing
-
     def clean_email(self):
         """Reject email that differ only in case."""
         email = self.cleaned_data.get("email")
-        print(email)
         if email and self._meta.model.objects.filter(email__iexact=email).exists():
             self._update_errors(
                 ValidationError(
