@@ -8,6 +8,8 @@ from .views import (
     password_reset_done_view,
     password_reset_confirm_view,
     password_reset_complete_view,
+    password_change_view,
+    password_change_done_view,
 )
 
 app_name = "users"
@@ -31,5 +33,11 @@ urlpatterns = [
         route="password-reset/complete/",
         view=password_reset_complete_view,
         name="password_reset_complete",
+    ),
+    path(route="password-change/", view=password_change_view, name="password_change"),
+    path(
+        route="password-change/done/",
+        view=password_change_done_view,
+        name="password_change_done",
     ),
 ]

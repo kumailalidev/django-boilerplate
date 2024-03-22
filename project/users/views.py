@@ -6,6 +6,8 @@ from django.core.exceptions import ImproperlyConfigured
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import REDIRECT_FIELD_NAME, logout as auth_logout
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import resolve_url
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -20,6 +22,7 @@ from django.contrib import messages
 from .tokens import default_token_generator
 from .mixins import RedirectURLMixin
 from .forms import (
+    PasswordChangeForm,
     SetPasswordForm,
     UserCreationForm,
     AuthenticationForm,
@@ -379,3 +382,43 @@ class PasswordResetCompleteView(PasswordContextMixin, TemplateView):
 
 
 password_reset_complete_view = PasswordResetCompleteView.as_view()
+
+
+class PasswordChangeView(PasswordContextMixin, FormView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy("users:password_change_done")
+    template_name = "registration/password_change_form.html"
+    title = _("Password Change")
+
+    @method_decorator(sensitive_post_parameters())
+    @method_decorator(csrf_protect)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        # Updating the password logs out all other sessions for the user
+        # except the current one.
+        update_session_auth_hash(self.request, form.user)
+        return super().form_valid(form)
+
+
+password_change_view = PasswordChangeView.as_view()
+
+
+class PasswordChangeDoneView(PasswordContextMixin, TemplateView):
+    template_name = "registration/password_change_done.html"
+    title = _("Password change successful")
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+password_change_done_view = PasswordChangeDoneView.as_view()
