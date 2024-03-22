@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UsernameField, ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import capfirst
 
-from .utils import generate_and_mail_reset_link
+from .utils import generate_and_mail_link as generate_and_mail_reset_link
 from .tokens import default_token_generator
 
 UserModel = get_user_model()

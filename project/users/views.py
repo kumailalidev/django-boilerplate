@@ -1,9 +1,12 @@
-from django.http import HttpResponseRedirect
+from urllib.parse import urlparse
+
+from django.http import HttpResponseRedirect, QueryDict
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import REDIRECT_FIELD_NAME, logout as auth_logout
 from django.shortcuts import resolve_url
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
@@ -13,8 +16,9 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.contrib import messages
 
+from .tokens import default_token_generator
 from .mixins import RedirectURLMixin
-from .forms import UserCreationForm, AuthenticationForm
+from .forms import UserCreationForm, AuthenticationForm, PasswordResetForm
 
 LOGIN_URL = settings.LOGIN_URL
 LOGIN_REDIRECT_URL = settings.LOGIN_REDIRECT_URL
@@ -198,6 +202,29 @@ class UserLogoutView(RedirectURLMixin, TemplateView):
 user_logout_view = UserLogoutView.as_view()
 
 
+def logout_the_login(request, login_url=None):
+    """
+    Log out the user if they are logged in. Then redirect the login page.
+    """
+    login_url = resolve_url(login_url or settings.LOGIN_URL)
+    return UserLogoutView.as_view(next_page=login_url)(request)
+
+
+def redirect_to_login(next, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
+    """
+    Redirect the user to the login page, passing the given 'next' page
+    """
+    resolved_url = resolve_url(login_url or settings.LOGIN_URL)
+
+    login_url_parts = list(urlparse(resolve_url))
+    if redirect_field_name:
+        querystring = QueryDict(login_url_parts[4], mutable=True)
+        querystring[redirect_field_name] = next
+        login_url_parts[4] = querystring.urlencode(safe="/")
+
+    return HttpResponseRedirect(urlparse(login_url_parts))
+
+
 class PasswordContextMixin:
     extra_context = None
 
@@ -207,3 +234,49 @@ class PasswordContextMixin:
             {"title": self.title, "subtitle": None, **(self.extra_context or {})}
         )
         return context
+
+
+class UserPasswordResetView(PasswordContextMixin, FormView):
+    """
+    Generate password reset link and mail to user.
+    """
+
+    email_template_name = "registration/password_reset_email.html"
+    extra_email_context = None
+    form_class = PasswordResetForm
+    from_email = None
+    html_email_template_name = None
+    subject_template_name = "registration/password_reset_subject.txt"
+    success_url = reverse_lazy("users:password_reset_done")
+    template_name = "registration/password_reset_form.html"
+    title = _("Password reset")
+    token_generator = default_token_generator
+
+    @method_decorator(csrf_protect)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        opts = {
+            "use_https": self.request.is_secure(),
+            "token_generator": self.token_generator,
+            "from_email": self.from_email,
+            "email_template_name": self.email_template_name,
+            "subject_template_name": self.subject_template_name,
+            "request": self.request,
+            "html_email_template_name": self.html_email_template_name,
+            "extra_email_context": self.extra_email_context,
+        }
+        form.save(**opts)
+        return super().form_valid(form)
+
+
+password_reset_view = UserPasswordResetView.as_view()
+
+
+class UserPasswordResetDoneView(PasswordContextMixin, TemplateView):
+    template_name = "registration/password_reset_done.html"
+    title = _("Password reset sent")
+
+
+password_reset_done_view = UserPasswordResetDoneView.as_view()
