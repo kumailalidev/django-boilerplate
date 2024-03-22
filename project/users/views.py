@@ -165,7 +165,6 @@ class UserLogoutView(RedirectURLMixin, TemplateView):
 
     http_method_names = ["post", "options"]
     template_name = "registration/logged_out.html"
-    next_page = "users:login"
     extra_context = None
 
     @method_decorator(csrf_protect)
@@ -192,7 +191,7 @@ class UserLogoutView(RedirectURLMixin, TemplateView):
         elif LOGOUT_REDIRECT_URL:
             return resolve_url(LOGOUT_REDIRECT_URL)
         else:
-            self.request.path
+            return self.request.path
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
