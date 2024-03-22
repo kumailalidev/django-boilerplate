@@ -5,10 +5,12 @@ from django.contrib.auth.forms import UsernameField, ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import capfirst
 
-from .utils import generate_and_mail_link as generate_and_mail_reset_link
+from .utils import generate_and_mail_link
 from .tokens import default_token_generator
 
 UserModel = get_user_model()
+
+generate_and_mail_password_reset_link = generate_and_mail_link
 
 
 class BaseUserCreationForm(forms.ModelForm):
@@ -261,7 +263,7 @@ class PasswordResetForm(forms.Form):
         user.
         """
         email = self.cleaned_data["email"]
-        generate_and_mail_reset_link(
+        generate_and_mail_password_reset_link(
             email,
             domain_override,
             subject_template_name,
@@ -301,8 +303,8 @@ class SetPasswordForm(forms.Form):
         super().__init__(*args, **kwargs)
 
     def clean_new_password2(self):
-        password1 = self.cleaned_data["password1"]
-        password2 = self.cleaned_data["password2"]
+        password1 = self.cleaned_data["new_password1"]
+        password2 = self.cleaned_data["new_password2"]
         if password1 and password2 and password1 != password2:
             raise ValidationError(
                 self.error_messages["password_mismatch"], code="password_mismatch"

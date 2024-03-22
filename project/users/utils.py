@@ -1,12 +1,13 @@
 import unicodedata
 
 from django.template import loader
-from django.contrib.auth import REDIRECT_FIELD_NAME, get_user_model
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.template import loader
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 
 UserModel = get_user_model()
@@ -114,3 +115,20 @@ def generate_and_mail_link(
             user_email,
             html_email_template_name=html_email_template_name,
         )
+
+
+def get_user_via_uidb64(uidb64):
+    """Return user object using provided base 64 encoded user id value."""
+    try:
+        # urlsafe_base64_decode() decodes to bytestring
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = UserModel._default_manager.get(pk=uid)
+    except (
+        TypeError,
+        ValueError,
+        OverflowError,
+        UserModel.DoesNotExist,
+        ValidationError,
+    ):
+        user = None
+    return user
