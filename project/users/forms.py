@@ -5,6 +5,9 @@ from django.contrib.auth.forms import UsernameField, ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import capfirst
 
+from .utils import generate_and_mail_reset_link
+from .tokens import default_token_generator
+
 UserModel = get_user_model()
 
 
@@ -232,4 +235,42 @@ class AuthenticationForm(forms.Form):
             self.error_messages["invalid_login"],
             code="invalid_login",
             params={"username": self.username_field.verbose_name},
+        )
+
+
+class PasswordResetForm(forms.Form):
+    email = forms.EmailField(
+        label=_("Email"),
+        max_length=254,
+        widget=forms.EmailInput(attrs={"autocomplete": "email"}),
+    )
+
+    def save(
+        self,
+        domain_override=None,
+        subject_template_name="registration/password_reset_subject.txt",
+        email_template_name="registration/password_reset_email.html",
+        use_https=False,
+        token_generator=default_token_generator,
+        from_email=None,
+        request=None,
+        html_email_template_name=None,
+        extra_email_context=None,
+    ):
+        """
+        Generate a one-use only link for resetting password and send it to the
+        user.
+        """
+        email = self.cleaned_data["email"]
+        generate_and_mail_reset_link(
+            email,
+            domain_override,
+            subject_template_name,
+            email_template_name,
+            use_https,
+            token_generator,
+            from_email,
+            request,
+            html_email_template_name,
+            extra_email_context,
         )
