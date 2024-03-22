@@ -9,7 +9,7 @@ DEBUG = settings.DEBUG
 urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url="/static/images/icons/favicon.ico")),
     path("admin/", admin.site.urls),
-    path("accounts/", include("project.users.urls", namespace="users")),
+    path("accounts/", include("project.accounts.urls", namespace="users")),
     path("greetings/", include("project.greetings.urls")),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT

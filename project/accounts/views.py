@@ -20,7 +20,7 @@ from django.views.generic.edit import FormView
 from django.contrib import messages
 
 from .tokens import default_token_generator
-from .mixins import RedirectURLMixin
+from .mixins import RedirectURLMixin, PasswordContextMixin
 from .forms import (
     PasswordChangeForm,
     SetPasswordForm,
@@ -35,7 +35,7 @@ LOGIN_REDIRECT_URL = settings.LOGIN_REDIRECT_URL
 LOGOUT_REDIRECT_URL = settings.LOGOUT_REDIRECT_URL
 
 
-class UserSignUpView(RedirectURLMixin, FormView):
+class SignUpView(RedirectURLMixin, FormView):
     """
     Display the sign up form and handle the sign up action.
     """
@@ -93,10 +93,10 @@ class UserSignUpView(RedirectURLMixin, FormView):
         return context
 
 
-user_signup_view = UserSignUpView.as_view()
+signup_view = SignUpView.as_view()
 
 
-class UserLoginView(RedirectURLMixin, FormView):
+class LoginView(RedirectURLMixin, FormView):
     """
     Display the login form and handle the login action.
     """
@@ -155,10 +155,10 @@ class UserLoginView(RedirectURLMixin, FormView):
         return context
 
 
-user_login_view = UserLoginView.as_view()
+login_view = LoginView.as_view()
 
 
-class UserLogoutView(RedirectURLMixin, TemplateView):
+class LogoutView(RedirectURLMixin, TemplateView):
     """
     Log out the user and display 'You are logged out' message.
     """
@@ -208,7 +208,7 @@ class UserLogoutView(RedirectURLMixin, TemplateView):
         return context
 
 
-user_logout_view = UserLogoutView.as_view()
+logout_view = LogoutView.as_view()
 
 
 def logout_the_login(request, login_url=None):
@@ -216,7 +216,7 @@ def logout_the_login(request, login_url=None):
     Log out the user if they are logged in. Then redirect the login page.
     """
     login_url = resolve_url(login_url or settings.LOGIN_URL)
-    return UserLogoutView.as_view(next_page=login_url)(request)
+    return LogoutView.as_view(next_page=login_url)(request)
 
 
 def redirect_to_login(next, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
@@ -234,18 +234,7 @@ def redirect_to_login(next, login_url=None, redirect_field_name=REDIRECT_FIELD_N
     return HttpResponseRedirect(urlparse(login_url_parts))
 
 
-class PasswordContextMixin:
-    extra_context = None
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(
-            {"title": self.title, "subtitle": None, **(self.extra_context or {})}
-        )
-        return context
-
-
-class UserPasswordResetView(PasswordContextMixin, FormView):
+class PasswordResetView(PasswordContextMixin, FormView):
     """
     Generate password reset link and mail to user.
     """
@@ -256,7 +245,7 @@ class UserPasswordResetView(PasswordContextMixin, FormView):
     from_email = None
     html_email_template_name = None
     subject_template_name = "registration/password_reset_subject.txt"
-    success_url = reverse_lazy("users:password_reset_done")
+    success_url = reverse_lazy("accounts:password_reset_done")
     template_name = "registration/password_reset_form.html"
     title = _("Password reset")
     token_generator = default_token_generator
@@ -280,27 +269,27 @@ class UserPasswordResetView(PasswordContextMixin, FormView):
         return super().form_valid(form)
 
 
-password_reset_view = UserPasswordResetView.as_view()
+password_reset_view = PasswordResetView.as_view()
 
 
-class UserPasswordResetDoneView(PasswordContextMixin, TemplateView):
+class PasswordResetDoneView(PasswordContextMixin, TemplateView):
     template_name = "registration/password_reset_done.html"
     title = _("Password reset sent")
 
 
-password_reset_done_view = UserPasswordResetDoneView.as_view()
+password_reset_done_view = PasswordResetDoneView.as_view()
 
 INTERNAL_RESET_SESSION_TOKEN = "_password_reset_token"
 
 
-class UserPasswordResetConfirmView(PasswordContextMixin, FormView):
+class PasswordResetConfirmView(PasswordContextMixin, FormView):
     """Validates reset link and reset password."""
 
     form_class = SetPasswordForm
     post_reset_login = False
     post_reset_login_backend = None
     reset_url_token = "set-password"
-    success_url = reverse_lazy("users:password_reset_complete")
+    success_url = reverse_lazy("accounts:password_reset_complete")
     template_name = "registration/password_reset_confirm.html"
     title = _("Enter new password")
     token_generator = default_token_generator
@@ -367,7 +356,7 @@ class UserPasswordResetConfirmView(PasswordContextMixin, FormView):
         return context
 
 
-password_reset_confirm_view = UserPasswordResetConfirmView.as_view()
+password_reset_confirm_view = PasswordResetConfirmView.as_view()
 
 
 class PasswordResetCompleteView(PasswordContextMixin, TemplateView):
@@ -385,7 +374,7 @@ password_reset_complete_view = PasswordResetCompleteView.as_view()
 
 class PasswordChangeView(PasswordContextMixin, FormView):
     form_class = PasswordChangeForm
-    success_url = reverse_lazy("users:password_change_done")
+    success_url = reverse_lazy("accounts:password_change_done")
     template_name = "registration/password_change_form.html"
     title = _("Password Change")
 
