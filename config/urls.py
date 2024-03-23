@@ -45,4 +45,8 @@ if DEBUG:
             default_views.page_not_found,
             kwargs={"exception": Exception("Page not Found")},
         ),
+        path(
+            "500/",
+            default_views.server_error,
+        ),
     ]
