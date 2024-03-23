@@ -34,5 +34,10 @@ if DEBUG:
             "400/",
             default_views.bad_request,
             kwargs={"exception": Exception("Permission Denied")},
-        )
+        ),
+        path(
+            "403/",
+            default_views.permission_denied,
+            kwargs={"exception": Exception("Permission Denied")},
+        ),
     ]
