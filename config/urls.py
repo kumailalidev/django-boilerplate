@@ -40,4 +40,9 @@ if DEBUG:
             default_views.permission_denied,
             kwargs={"exception": Exception("Permission Denied")},
         ),
+        path(
+            "404/",
+            default_views.page_not_found,
+            kwargs={"exception": Exception("Page not Found")},
+        ),
     ]
