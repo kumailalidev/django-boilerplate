@@ -74,7 +74,6 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     "project.accounts.apps.UsersConfig",
-    "project.greetings.apps.GreetingsConfig",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

@@ -20,8 +20,7 @@ urlpatterns = [
     # User management
     path("accounts/", include("project.accounts.urls", namespace="accounts")),
     # Project
-    path("greetings/", include("project.greetings.urls")),
-    # Media files
+    # Your project URLs...
 ]
 
 # for development environment only
