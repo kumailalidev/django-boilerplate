@@ -188,7 +188,12 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#fixture-dirs
 FIXTURE_DIRS = []  # Default
 
-# TODO: Add SECURITY settings
+# SECURITY
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
+SESSION_COOKIE_HTTPONLY = True  # Default
+# https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
+CSRF_COOKIE_HTTPONLY = False  # Default
 
 # EMAIL
 # ------------------------------------------------------------------------------
