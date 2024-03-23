@@ -12,7 +12,7 @@ urlpatterns = [
     # Django Admin
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    path("accounts/", include("project.accounts.urls", namespace="users")),
+    path("accounts/", include("project.accounts.urls", namespace="accounts")),
     # Project
     path("greetings/", include("project.greetings.urls")),
     # Media files
