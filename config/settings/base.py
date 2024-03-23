@@ -192,6 +192,8 @@ FIXTURE_DIRS = []  # Default
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
 SESSION_COOKIE_HTTPONLY = True  # Default
+# https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-secure
+SESSION_COOKIE_SECURE = False  # Default
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = False  # Default
 
@@ -202,8 +204,8 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
-# https://docs.djangoproject.com/en/2.2/ref/settings/#email-timeout
-EMAIL_TIMEOUT = 5  # seconds, default is None
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
+EMAIL_TIMEOUT = 5  # Default is None
 
 # ADMIN
 # ------------------------------------------------------------------------------
