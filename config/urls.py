@@ -7,19 +7,22 @@ from django.views.generic.base import RedirectView
 DEBUG = settings.DEBUG
 
 urlpatterns = [
+    # Favicon
     path("favicon.ico", RedirectView.as_view(url="/static/images/icons/favicon.ico")),
-    path("admin/", admin.site.urls),
+    # Django Admin
+    path(settings.ADMIN_URL, admin.site.urls),
+    # User management
     path("accounts/", include("project.accounts.urls", namespace="users")),
+    # Project
     path("greetings/", include("project.greetings.urls")),
-] + static(
-    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-)  # Serving media files uploaded by a user
+    # Media files
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # for development environment only
 if DEBUG:
-    #  Django debug toolbar
-    urlpatterns += [
-        path("__debug__/", include("debug_toolbar.urls")),
-    ]
-    # Serving static files from STATIC_ROOT folder
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    if "debug_toolbar" in settings.INSTALLED_APPS:
+        import debug_toolbar
+
+        urlpatterns += [
+            path("__debug__/", include(debug_toolbar.urls)),
+        ]
