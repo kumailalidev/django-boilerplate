@@ -5,7 +5,12 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
 
+# settings
 DEBUG = settings.DEBUG
+INSTALLED_APPS = settings.INSTALLED_APPS
+ADMIN_URL = settings.ADMIN_URL
+MEDIA_URL = settings.MEDIA_URL
+MEDIA_ROOT = settings.MEDIA_ROOT
 
 urlpatterns = [
     path(
@@ -16,7 +21,7 @@ urlpatterns = [
     # Favicon
     path("favicon.ico", RedirectView.as_view(url="/static/images/icons/favicon.ico")),
     # Django Admin
-    path(settings.ADMIN_URL, admin.site.urls),
+    path(ADMIN_URL, admin.site.urls),
     # User management
     path("accounts/", include("project.accounts.urls", namespace="accounts")),
     # Project
@@ -28,10 +33,10 @@ if DEBUG:
     # Serve media files using static app
     from django.conf.urls.static import static
 
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
     # Activate Django debug toolbar
-    if "debug_toolbar" in settings.INSTALLED_APPS:
+    if "debug_toolbar" in INSTALLED_APPS:
         import debug_toolbar
 
         urlpatterns += [
