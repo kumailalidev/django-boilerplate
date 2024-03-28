@@ -169,8 +169,11 @@ MEDIA_URL = "/media/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES = [
     {
+        # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        # https://docs.djangoproject.com/en/dev/ref/settings/#dirs
         "DIRS": [str(PROJECT_DIR / "templates")],
+        # https://docs.djangoproject.com/en/dev/ref/settings/#app-dirs
         "APP_DIRS": True,
         "OPTIONS": {
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
@@ -183,6 +186,9 @@ TEMPLATES = [
         },
     },
 ]
+
+# https://docs.djangoproject.com/en/dev/ref/settings/#form-renderer
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # FIXTURES
 # ------------------------------------------------------------------------------
