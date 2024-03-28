@@ -203,6 +203,9 @@ SESSION_COOKIE_HTTPONLY = True  # Default
 SESSION_COOKIE_SECURE = False  # Default
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = False  # Default
+# https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
+X_FRAME_OPTIONS = "DENY"
+
 
 # EMAIL
 # ------------------------------------------------------------------------------
