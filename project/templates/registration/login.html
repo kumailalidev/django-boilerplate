@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+
 {% load i18n static %}
+
 {% block content %}
   <!-- messages -->
   {% if messages %}
@@ -36,11 +38,11 @@
       {% endif %}
       <div>
         <!-- hidden field for redirecting -->
-        <input type="hidden" name="next" value="{{ next }}">
+        <input type="hidden" name="next" value="{{ next }}" />
       </div>
       <div>
-        <input type="submit" value="{% translate 'Log in' %}">
+        <input type="submit" value="{% translate 'Log in' %}" />
       </div>
     </form>
   </div>
-{% endblock %}
+{% endblock content %}

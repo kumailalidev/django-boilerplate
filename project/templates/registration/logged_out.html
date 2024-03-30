@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+
 {% load i18n %}
+
 {% block content %}
   <h1>{{ title }}</h1>
   <p>{{ subtitle }}</p>
@@ -12,4 +14,4 @@
   <p>
     <a href="{% url 'accounts:login' %}">{% translate 'Log in again' %}</a>
   </p>
-{% endblock %}
+{% endblock content %}
