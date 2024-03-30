@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+
 {% load i18n static %}
+
 {% block content %}
   <!-- messages -->
   {% if messages %}
@@ -21,7 +23,7 @@
     <form action="" method="post">
       {% csrf_token %}
       <h1>Required Information</h1>
-      <hr>
+      <hr />
       <div>
         {{ form.email.errors }}
         {{ form.email.label_tag }} {{ form.email }}
@@ -43,9 +45,9 @@
         {{ form.password2.label_tag }} {{ form.password2 }}
         {{ form.password2.help_text }}
       </div>
-      <hr>
+      <hr />
       <h1>Optional Information</h1>
-      <hr>
+      <hr />
       <div>
         {{ form.first_name.errors }}
         {{ form.first_name.label_tag }} {{ form.first_name }}
@@ -58,14 +60,14 @@
       </div>
       <div>
         <!-- hidden field for redirecting -->
-        <input type="hidden" name="next" value="{{ next }}">
+        <input type="hidden" name="next" value="{{ next }}" />
       </div>
-      <hr>
+      <hr />
       <div>
-        <input type="submit" value="{% translate 'Sign up' %}">
+        <input type="submit" value="{% translate 'Sign up' %}" />
       </div>
     </form>
-    <hr>
+    <hr />
     {% url 'accounts:login' as login_url %}
     {% if login_url %}
       <div>
