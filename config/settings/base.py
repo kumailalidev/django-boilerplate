@@ -216,6 +216,22 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-host
+EMAIL_HOST = env("DJANGO_EMAIL_HOST", default="localhost")
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-port
+EMAIL_PORT = env.int("DJANGO_EMAIL_PORT", default=25)
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-host-user
+EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER", default="")
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-host-password
+EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD", default="")
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-use-tls
+EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", default=False)
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-use-ssl
+EMAIL_USE_SSL = env.bool("DJANGO_EMAIL_USE_SSL", default=False)
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-ssl-certfile
+EMAIL_SSL_CERTFILE = env("DJANGO_EMAIL_SSL_CERTFILE", default=None)
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-ssl-keyfile
+EMAIL_SSL_KEYFILE = env("DJANGO_EMAIL_SSL_KEYFILE", default=None)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5  # Default is None
 
