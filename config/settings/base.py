@@ -233,7 +233,7 @@ EMAIL_SSL_CERTFILE = env("DJANGO_EMAIL_SSL_CERTFILE", default=None)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-ssl-keyfile
 EMAIL_SSL_KEYFILE = env("DJANGO_EMAIL_SSL_KEYFILE", default=None)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
-EMAIL_TIMEOUT = 5  # Default is None
+EMAIL_TIMEOUT = None  # Default
 
 # ADMIN
 # ------------------------------------------------------------------------------
