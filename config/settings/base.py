@@ -15,7 +15,7 @@ env = environ.Env()
 ENV_FILE = BASE_DIR / ".env"
 if Path(ENV_FILE).exists():
     # Take environment variables form .env file
-    env.read_env(str(ENV_FILE), overwrite=True)
+    env.read_env(str(ENV_FILE))
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -27,8 +27,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # In Windows, this must be set to your system time zone.
 TIME_ZONE = "UTC"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-# https://docs.djangoproject.com/en/dev/ref/settings/#site-id
-SITE_ID = 1
+LANGUAGE_CODE = "en-us"
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
@@ -65,7 +64,6 @@ DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-    "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.forms",
@@ -142,6 +140,7 @@ MIDDLEWARE = [
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 # 'public' directory for media and staticfiles
 PUBLIC_DIR = BASE_DIR / "public"
 
@@ -208,6 +207,11 @@ CSRF_COOKIE_HTTPONLY = False  # Default
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "DENY"
 
+
+# HTTP
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#use-x-forwarded-host
+USE_X_FORWARDED_HOST = False  # Default
 
 # EMAIL
 # ------------------------------------------------------------------------------
