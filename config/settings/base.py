@@ -72,6 +72,7 @@ THIRD_PARTY_APPS = [
     # ...
 ]
 LOCAL_APPS = [
+    "project.core.apps.CoreConfig",
     "project.accounts.apps.UsersConfig",
 ]
 
