@@ -225,7 +225,7 @@ def redirect_to_login(next, login_url=None, redirect_field_name=REDIRECT_FIELD_N
     """
     resolved_url = resolve_url(login_url or settings.LOGIN_URL)
 
-    login_url_parts = list(urlparse(resolve_url))
+    login_url_parts = list(urlparse(resolved_url))
     if redirect_field_name:
         querystring = QueryDict(login_url_parts[4], mutable=True)
         querystring[redirect_field_name] = next

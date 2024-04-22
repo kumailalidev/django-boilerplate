@@ -1,6 +1,5 @@
 import unicodedata
 
-from django.template import loader
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.template import loader
