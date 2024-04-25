@@ -1,8 +1,12 @@
-pytest:
-	pytest -x --cov;
+# Variables
+# --------------------------------------------------------------------
+APP_NAME=
 
-cov-html:
-	coverage html;
+# Rules
+# --------------------------------------------------------------------
+
+startapp:
+	python manage.py startapp ${APP_NAME}
 
 makemigrations:
 	python manage.py makemigrations;
@@ -18,8 +22,14 @@ runserver:
 runserver-prod:
 	python manage.py runserver --settings=config.settings.production;
 
-whitenoise:
+nostatic:
 	python manage.py runserver --nostatic;
+
+pytest:
+	pytest -x --cov;
+
+cov-html:
+	coverage html;
 
 djlint:
 	djlint project/templates/
