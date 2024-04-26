@@ -30,7 +30,7 @@
         {{ form.password.errors }}
         {{ form.password.label_tag }} {{ form.password }}
       </div>
-      {% url '' as password_reset_url %}
+      {% url 'accounts:password_reset' as password_reset_url %}
       {% if password_reset_url %}
         <div>
           <a href="{{ password_reset_url }}">{% translate 'Forgotten your password or username?' %}</a>
