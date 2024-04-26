@@ -17,13 +17,13 @@ migrate:
 migrations:	makemigrations migrate;
 
 runserver:
-	python manage.py runserver;
+	python manage.py runserver --settings=config.settings.development;
 
 runserver-prod:
 	python manage.py runserver --settings=config.settings.production;
 
 nostatic:
-	python manage.py runserver --nostatic;
+	python manage.py runserver --settings=config.settings.development --nostatic;
 
 pytest:
 	pytest -x --cov;
