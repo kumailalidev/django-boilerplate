@@ -1,29 +1,31 @@
 # Variables
 # --------------------------------------------------------------------
+ENVIRONMENT=development
 APP_NAME=
+COMMAND=
 
 # Rules
 # --------------------------------------------------------------------
 
+execute:
+	python manage.py $(COMMAND) --settings=config.settings.$(ENVIRONMENT)
+
 startapp:
-	python manage.py startapp ${APP_NAME}
+	python manage.py startapp $(APP_NAME)
 
 makemigrations:
-	python manage.py makemigrations;
+	python manage.py makemigrations --settings=config.settings.$(ENVIRONMENT);
 
 migrate:
-	python manage.py migrate;
+	python manage.py migrate --settings=config.settings.$(ENVIRONMENT);
 
 migrations:	makemigrations migrate;
 
 runserver:
-	python manage.py runserver --settings=config.settings.development;
-
-runserver-prod:
-	python manage.py runserver --settings=config.settings.production;
+	python manage.py runserver --settings=config.settings.$(ENVIRONMENT);
 
 nostatic:
-	python manage.py runserver --settings=config.settings.development --nostatic;
+	python manage.py runserver --settings=config.settings.$(ENVIRONMENT) --nostatic;
 
 pytest:
 	pytest -x --cov;
