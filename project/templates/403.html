@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}
-  Forbidden (403)
+  403 &ndash; Forbidden
 {% endblock title %}
 {% block content %}
-  <h1>Forbidden (403)</h1>
+  <h1>403 &ndash; Forbidden</h1>
   <p>
-    {% if exception %}
-      {{ exception }}
-    {% else %}
-      You're not allowed to access this page.
-    {% endif %}
+    {% if exception %}{{ exception }}{% endif %}
+    <hr />
+    The HTTP 403 Forbidden response status code indicates that the server understands the request but refuses to authorize it.
+    This status is similar to 401, but for the 403 Forbidden status code, re-authenticating makes no difference. The access is tied to the application logic, such as insufficient rights to a resource.
+    <br />
+    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403">403 Forbidden &ndash; MDN</a>
   </p>
 {% endblock content %}

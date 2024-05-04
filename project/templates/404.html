@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}
-  Page not found
+  404 &ndash; Not Found
 {% endblock title %}
 {% block content %}
-  <h1>Not found (404)</h1>
+  <h1>404 &ndash; Not Found</h1>
   <p>
-    {% if exception %}
-      {{ exception }}
-    {% else %}
-      This is not the page you were looking for.
-    {% endif %}
+    {% if exception %}{{ exception }}{% endif %}
+    <hr />
+    The HTTP 404 Not Found response status code indicates that the server cannot find the requested resource. Links that lead to a 404 page are often called broken or dead links and can be subject to link rot.
+    A 404 status code only indicates that the resource is missing: not whether the absence is temporary or permanent. If a resource is permanently removed, use the 410 (Gone) status instead.
+    <br />
+    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404">404 Not Found &ndash; MDN</a>
   </p>
 {% endblock content %}
