@@ -25,12 +25,12 @@ class Command(BaseCommand):
                 # Stop executing further
                 return None
         except Exception as e:
-            print(e)
             self.stdout.write(
                 self.style.ERROR(
                     "Please make sure DATABASES settings are setup correctly in Django settings."
                 )
             )
+            self.stdout.write(self.style.WARNING(f"EXCEPTION: {e}"))
             # Stop executing further
             return None
 
