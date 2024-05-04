@@ -92,6 +92,7 @@ html[data-theme="light"],
     "Noto Color Emoji";
 }
 
+/* DARK MODE */
 @media (prefers-color-scheme: dark) {
   :root {
     --primary: #264b5d;
