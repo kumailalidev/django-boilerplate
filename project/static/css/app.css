@@ -1,3 +1,17 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__actions ul {
+  display: flex;
+  gap: 12px;
+  padding: 0px;
+  /* By default chrome have padding-inline-start set to 40px */
+  list-style-type: none;
 }

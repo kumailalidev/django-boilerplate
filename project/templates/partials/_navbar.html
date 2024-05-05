@@ -1,8 +1,10 @@
 {% load i18n %}
 
-<nav>
-  <div>
-    <h1>Django Web Framework</h1>
+<div class="navbar">
+  <h1 class="navbar__brand">
+    <a href="{% url 'home' %}">Django Web Framework</a>
+  </h1>
+  <nav class="navbar__actions">
     <ul>
       {% if request.user.is_authenticated %}
         <li>@{{ request.user.username }}</li>
@@ -22,5 +24,5 @@
         </li>
       {% endif %}
     </ul>
-  </div>
-</nav>
+  </nav>
+</div>
