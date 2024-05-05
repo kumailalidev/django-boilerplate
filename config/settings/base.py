@@ -42,7 +42,9 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 sqlite_path = str(PROJECT_DIR / "db.sqlite3")
 DATABASES = {
+    # https://django-environ.readthedocs.io/en/latest/types.html#environ-env-db-url
     # PostgreSQL:   postgres://user:password@hostname_or_ip:port/database_name
+    # MySQL:        mssql://user:password@host:port/dbname
     # SQLite:       sqlite:////path/to/database/file (e.g. sqlite:///db.sqlite3)
     "default": env.db(
         "DATABASE_URL",
