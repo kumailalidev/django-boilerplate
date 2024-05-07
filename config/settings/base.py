@@ -9,6 +9,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # '/project' directory
 PROJECT_DIR = BASE_DIR / "project"
+# 'public' directory for media and staticfiles
+PUBLIC_DIR = BASE_DIR / "public"
 
 env = environ.Env()
 
@@ -158,8 +160,16 @@ STORAGES = {
     },
 }
 
-# 'public' directory for media and staticfiles
-PUBLIC_DIR = BASE_DIR / "public"
+# CACHES
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#caches
+CACHES = {
+    # Default
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "",
+    }
+}
 
 # STATIC
 # ------------------------------------------------------------------------------
@@ -264,7 +274,6 @@ ADMIN_URL = "admin/"
 ADMINS = []  # Default
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = []  # Default
-
 
 # LOGGING
 # ------------------------------------------------------------------------------
