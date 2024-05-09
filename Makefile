@@ -27,6 +27,9 @@ runserver:
 nostatic:
 	python manage.py runserver --settings=config.settings.$(ENVIRONMENT) --nostatic;
 
+collectstatic:
+	python manage.py collectstatic --settings=config.settings.$(ENVIRONMENT);
+
 pytest:
 	pytest -x --cov;
 
