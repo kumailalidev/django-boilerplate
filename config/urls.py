@@ -25,7 +25,8 @@ urlpatterns = [
     # User management
     path("accounts/", include("project.accounts.urls", namespace="accounts")),
     # Project
-    # Your project URLs...
+    # core
+    path("core/", include("project.core.urls", namespace="core")),
 ]
 
 # for development environment only
